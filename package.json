@@ -1,0 +1,19 @@
+{
+  "name": "op-store-handler",
+  "version": "0.1.0",
+  "description": "A desktop store management system built in electronJS.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "client": "cd ./public && npm start"
+  },
+  "author": "AluBhorta",
+  "license": "GNU",
+  "dependencies": {
+    "electron": "^4.0.8",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
