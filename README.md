@@ -6,7 +6,7 @@ A desktop store management system built on electronJS and ReactJS.
 
 front end: react, sass, bootstrap?/w3?
 backend: electronJS,
-db: mysql/sqlite3//PostgreSQL
+db: mysql/sqlite3/PostgreSQL
 
 ## Features
 
@@ -38,9 +38,9 @@ db: mysql/sqlite3//PostgreSQL
   - itemId
 	- itemName
   - quantityUnit (e.g. piece/kg/litre/metre/foot/inch/...other)
-	- stockQuantity (e.g. 0-10^8)
+	- stockQuantity (e.g. 0-10^8 units)
   - buyingPricePerUnit (e.g. 80tk per kg/Ltr/foot/...)
-  - sellingPricePerUnit
+  - sellingPricePerUnit (e.g. 85tk per kg/Ltr/foot/...)
   - ~itemImage
   - ~itemDetails
   - ~itemCompany
@@ -53,21 +53,23 @@ db: mysql/sqlite3//PostgreSQL
 - OrderItem
 	- orderId
 	- itemId
-	- orderQuantity
 	- quantityUnit (e.g. drop down box with all SI units + other for custom units)
+	- orderQuantity
+  - price (unitPrice * orderQuantity)
 
 - ~supply()
-
 - ~supplier()
 - ~user() -> for auth
 
 ### Pages && ACTIVITY LIST
 
+<!-- HOME -->
 - HomePage
 
+<!-- STOCK -->
 - StockPage
   - add new item(s) aka. supply -> [
-    init new supply,
+    init new supply (~~possible to make a supply entity here),
     enter number of items in supply,
     foreach(item in items): enter item.data,
     ~~choose small imageFile to be uploaded as a blob
@@ -84,8 +86,8 @@ db: mysql/sqlite3//PostgreSQL
     ~~onClick goto item details
   ]
   - update item(s) -> [
-    onClick of updateItem in stock-window goto updateItem-window,
-    show current item.data(s) in input fields,
+    onClick of updateItem() in stock-window goto updateItem-window,
+    show current item.data in input fields,
     allow user to edit,
     confirm edit,
     check if all required data was entered and valid input types were given,
@@ -93,17 +95,18 @@ db: mysql/sqlite3//PostgreSQL
     else: reject and alert user
   ]
   - delete item(s) -> [
-    select 'remove/delete amount' particular item from stock-window,
+    select "remove/delete amount" particular item from stock-window,
     goto deleteItem-window,
     show stockQuantity from db,
-    allow user to adjust quantity,
+    allow user to decrease/adjust quantity,
     confirm removal,
     save to db
   ]
 
+<!-- ORDER -->
 - OrderPage
   - add new order -> [
-    init new order,
+    init addNewOrder(),
     add item via itemName, orderQuantity to cart,
     add more item(s),
     update/remove item(s) from cart if needed,
@@ -113,8 +116,17 @@ db: mysql/sqlite3//PostgreSQL
   - view order history -> [
     click orderHistory,
     orderHistory-window shows table of all orders from db,
-    >.>
+    onClick on a particular order item from table, load the particluar Order-window,
+    Order-window shows the Order.data,
+    ~cannot edit past orders, only delete allowed
   ]
-  - update order history records
-  - delete order history records
+  - delete order history records -> [
+    on Order-window, onClick of "delete order",
+    ask user to confirm,
+    on yes, delete order record from db
+  ]
 ...
+
+<!-- ~~SUPPLY -->
+- Supply
+  - View supply -> [...]
