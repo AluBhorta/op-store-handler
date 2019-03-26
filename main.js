@@ -68,16 +68,38 @@ ipcMain.on("closeAddItemWindow", (e, args) => {
   additemWindow = null;
 });
 
-ipcMain.on("submitAddItem", (e, args) => {
-  console.log(args);
+ipcMain.on("submitAddItem", (e, itemData) => {
+  console.log(itemData);
+
+  const NewItem = new Item(
+    itemData.name,
+    itemData.quantityUnit,
+    itemData.quantity,
+    itemData.buyingPrice,
+    itemData.sellingPrice,
+    itemData.details
+  );
+  console.log(NewItem);
+  // ###
+  //
+  // save the record to DB
 
   additemWindow.close();
   additemWindow = null;
 });
 
-// DEMO //
-// const i1 = new Item("hello");
-// i1.addQuantity(21);
-// console.log(i1.quantity);
-// i1.removeQuantity(22);
-// console.log(i1.quantity);
+ipcMain.on("searchForOldItem", (e, name) => {
+  console.log(name);
+
+  // ###
+  //
+  // query DB to check if name exists
+  const searchedItem = {
+    quantityUnit: "kg",
+    buyingPrice: "70",
+    sellingPrice: "80",
+    details: "A very important item."
+  };
+
+  e.sender.send("reply-searchForOldItem", searchedItem);
+});
