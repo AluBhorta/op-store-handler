@@ -12,8 +12,8 @@ db: mysql/sqlite3/PostgreSQL
 
 - Stock mgmt system (CRUD ITEMs)
 
-  - add new ITEM (details)
-  - add new supply (set of ITEMs, existing or new)
+  
+  - add new supply i.e. ITEM(s) (set of ITEMs, existing or new)
   - read/search ITEMs using (name / price range / quantity range) //~category
   - update an ITEM details (selling price / buying price / name / details)
   - delete ITEM(s)
@@ -46,11 +46,13 @@ db: mysql/sqlite3/PostgreSQL
   - ~itemCompany
 
 - ORDER
+
 	- orderId
 	- dateTime
 	- totalBill
 
 - OrderItem
+
 	- orderId
 	- itemId
 	- quantityUnit (e.g. drop down box with all SI units + other for custom units)
@@ -64,7 +66,7 @@ db: mysql/sqlite3/PostgreSQL
 ### Pages && ACTIVITY LIST
 
 <!-- HOME -->
-- HomePage
+- Dashboard
 
 <!-- STOCK -->
 - StockPage
@@ -79,14 +81,14 @@ db: mysql/sqlite3/PostgreSQL
   ]
   - view items in stock -> [
     handle view stock event,
-    goto stock-window (table of items from ITEMs table in DB),
+    goto stock-Table (table of items from ITEMs table in DB),
     ~~goto stock shows abstract item list,
-    ~~clicking a particular item shows item details: item-window,
-    ~~search for a particular item by: [[name], [price-range], [quantity-range]],
-    ~~onClick goto item details
+    ~~clicking a particular item shows itemPage,
+    ~~search for a particular item by: [ [name], [price-range], [quantity-range] ],
+    ~~onClick goto itemPage
   ]
-  - update item(s) -> [
-    onClick of updateItem() in stock-window goto updateItem-window,
+  - update item -> [
+    onClick of updateItem() in stock-Table goto updateItem-window,
     show current item.data in input fields,
     allow user to edit,
     confirm edit,
@@ -94,8 +96,8 @@ db: mysql/sqlite3/PostgreSQL
     if all good: save to db,
     else: reject and alert user
   ]
-  - delete item(s) -> [
-    select "remove/delete amount" particular item from stock-window,
+  - delete item -> [
+    select "remove/delete amount" particular item from stock-Table,
     goto deleteItem-window,
     show stockQuantity from db,
     allow user to decrease/adjust quantity,
