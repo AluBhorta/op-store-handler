@@ -10,8 +10,7 @@
   "author": "AluBhorta",
   "license": "GNU",
   "dependencies": {
-    "electron": "^4.0.8",
-    "express": "^4.16.4"
+    "electron": "^4.0.8"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

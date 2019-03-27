@@ -2,9 +2,11 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const Item = require("./models/Item");
 
 // BROWSER-WINDOWS //
-let mainWindow, win2, additemWindow;
+let mainWindow, demoWindow, additemWindow;
 
+//
 // WINDOW CREATION FUNCTIONS  //
+//
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 700,
@@ -20,7 +22,7 @@ function createMainWindow() {
 
 function createAddItemWindow() {
   additemWindow = new BrowserWindow({
-    width: 600,
+    width: 650,
     height: 450,
     webPreferences: {
       nodeIntegration: true
@@ -29,19 +31,22 @@ function createAddItemWindow() {
     modal: true
   });
   additemWindow.loadURL("http://localhost:3000/add-new-supply");
-  additemWindow.webContents.openDevTools();
+  // additemWindow.webContents.openDevTools();
   additemWindow.on("closed", () => (additemWindow = null));
 }
 
 function createWindow2() {
-  win2 = new BrowserWindow();
-  win2.webContents.openDevTools();
-  win2.loadFile(__dirname + "/index.html");
-  win2.on("closed", () => (win2 = null));
+  demoWindow = new BrowserWindow();
+  demoWindow.webContents.openDevTools();
+  demoWindow.loadFile(__dirname + "/index.html");
+  demoWindow.on("closed", () => (demoWindow = null));
 }
 
+//
 //  APP "ON" EVENTS //
+//
 app.on("ready", createMainWindow);
+
 // app.on("ready", createWindow2);  // for demo
 
 app.on("window-all-closed", function() {
@@ -52,24 +57,26 @@ app.on("activate", function() {
   if (mainWindow === null) createMainWindow();
 });
 
-// IPC
-ipcMain.on("ping", (e, args) => {
-  console.log("received PING! args: ", args);
-  const data = { payload: "very important data." };
-  e.sender.send("pong", data);
+//
+// IPC  //
+//
+
+ipcMain.on("addNewSupply", (e, msg) => {
+  console.log(msg);
+  createAddItemWindow();
 });
 
-ipcMain.on("addNewSupply", createAddItemWindow);
-
-ipcMain.on("closeAddItemWindow", (e, args) => {
-  console.log(args);
+ipcMain.on("closeAddItemWindow", (e, msg) => {
+  console.log(msg);
+  //  ###
+  //
   // ask user again with a dialogBox
   additemWindow.close();
   additemWindow = null;
 });
 
 ipcMain.on("submitAddItem", (e, itemData) => {
-  console.log(itemData);
+  console.log("submitting add item:", itemData);
 
   const NewItem = new Item(
     itemData.name,
@@ -82,20 +89,27 @@ ipcMain.on("submitAddItem", (e, itemData) => {
   console.log(NewItem);
   // ###
   //
-  // save the record to DB
+  // save the record to DB + let user know results
+
+  // + update stock table accordingly
+  // e.sender.send(
+  //   "itemAddedToDB",
+  //   "new item added to DB, update stock table accordingly"
+  // );
 
   additemWindow.close();
   additemWindow = null;
 });
 
 ipcMain.on("searchForOldItem", (e, name) => {
-  console.log(name);
+  console.log("searching for pre-existing item: ", name);
 
   // ###
   //
   // query DB to check if name exists
   const searchedItem = {
     quantityUnit: "kg",
+    stockQuantity: "200",
     buyingPrice: "70",
     sellingPrice: "80",
     details: "A very important item."
