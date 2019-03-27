@@ -9,14 +9,14 @@ let mainWindow, demoWindow, additemWindow;
 //
 function createMainWindow() {
   mainWindow = new BrowserWindow({
-    width: 700,
-    height: 500,
+    width: 1100,
+    height: 700,
     webPreferences: {
       nodeIntegration: true
     }
   });
   mainWindow.loadURL("http://localhost:3000/stocks");
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
   mainWindow.on("closed", () => (mainWindow = null));
 }
 
