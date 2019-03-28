@@ -16,7 +16,7 @@ const deleteItem = item => {
   ipcRenderer.send("deleteItemFromStock", item); // could just send item.name
 };
 
-export default function ItemPage({ item }) {
+export default function ItemPage({ item }, val) {
   const {
     name,
     quantityUnit,

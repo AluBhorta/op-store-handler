@@ -7,7 +7,9 @@ import Navigation from "./components/Navigation";
 import AddNewItemsPage from "./components/stock/AddNewItemsPage";
 import ItemPage from "./components/stock/ItemPage";
 import UpdateItemPage from "./components/stock/UpdateItemPage";
-const data = require("./components/stock/fakeStockData");
+import ErrorComponent from "./components/ErrorComponent";
+import qs from "qs";
+
 // const { ipcRenderer } = window.require("electron");
 
 class App extends Component {
@@ -43,21 +45,16 @@ class App extends Component {
                   return <UpdateItemPage />;
                 }}
               />
-              {/*
-               //  ###
-               //  
-               //  ItemPage to be loaded onClick of stockTable row instead of sample from fakeStockData 
-              */}
               <Route
                 path="/itemPage"
-                component={() => <ItemPage item={data[2]} />}
+                component={({ location }) => {
+                  const itemData = qs.parse(location.search, {
+                    ignoreQueryPrefix: true
+                  });
+                  return <ItemPage item={itemData} />;
+                }}
               />
-
-              {/*               
-              // ###
-              // 
-              // for no match render error 400~... bad request
-              */}
+              <Route component={ErrorComponent} />
             </Switch>
           </div>
         </Router>

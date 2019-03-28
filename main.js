@@ -122,13 +122,9 @@ ipcMain.on("submitAddItem", (e, itemData) => {
 
   // ###
   //
-  // save the record to DB + let user know results
-
-  // + update stock table accordingly
-  // e.sender.send(
-  //   "itemAddedToDB",
-  //   "new item added to DB, update stock table accordingly"
-  // );
+  // save the record to DB
+  // + let user know results
+  // + reload stock table accordingly
 
   addItemWindow.close();
   addItemWindow = null;
@@ -140,6 +136,7 @@ ipcMain.on("searchForOldItem", (e, name) => {
   // ###
   //
   // query DB to check if name exists
+  // + return searched item
   const searchedItem = {
     quantityUnit: "kg",
     stockQuantity: "200",
@@ -170,9 +167,10 @@ ipcMain.on("submitUpdateItem", (e, itemData) => {
   } = itemData;
   // ###
   //
-  // save updated item record to DB + display updated info in ItemPage+ let user know results
+  // save updated item record to DB
+  // + let user know results
+  // + reload ItemPage with data from DB
 
-  // + update ItemPage accordingly
   // e.sender.send(
   //   "itemUpdated",
   //   "item updated, update ItemPage accordingly"
@@ -195,5 +193,7 @@ ipcMain.on("deleteItemFromStock", (e, item) => {
 
   // ###
   //
-  // delete item from DB + redirect user to stock table + let user know result
+  // delete item from DB
+  // + let user know results
+  // + redirect user to stock table
 });

@@ -15,7 +15,7 @@ export default class Stocks extends Component {
   componentDidMount = () => {
     // ###
     //
-    // update state.stockItems via API call
+    // update state.stockItems via API call to DB
 
     this.setState({ stockItems: data }); // fakeData
   };
@@ -27,15 +27,20 @@ export default class Stocks extends Component {
     // ###
     //
     // reload StockTable
-    // ?via ipcRenderer.on("itemAddedToDB", (e, args) => console.log(args));
   };
 
   handleTableRowClick = item => {
-    // console.log(item);
-    // ###
-    //
-    // redirect ROUTE to ItemPage according to item -> figure out
-    // ? this.state.history.push("/dashboard");
+    const {
+      name,
+      quantityUnit,
+      stockQuantity,
+      buyingPrice,
+      sellingPrice,
+      details
+    } = item;
+    const url = `/itemPage?name=${name}&quantityUnit=${quantityUnit}&stockQuantity=${stockQuantity}&buyingPrice=${buyingPrice}&sellingPrice=${sellingPrice}&details=${details}`;
+
+    this.state.history.push(url);
   };
 
   render() {
