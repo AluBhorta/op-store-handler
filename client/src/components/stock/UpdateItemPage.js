@@ -4,14 +4,7 @@ const { ipcRenderer } = window.require("electron");
 export default class UpdateItemPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: "",
-      quantityUnit: "",
-      stockQuantity: "",
-      buyingPrice: "",
-      sellingPrice: "",
-      details: ""
-    };
+    this.state = props.item;
   }
 
   handleChange = e => {
@@ -27,8 +20,7 @@ export default class UpdateItemPage extends Component {
       quantityUnit,
       stockQuantity,
       buyingPrice,
-      sellingPrice,
-      details
+      sellingPrice
     } = this.state;
 
     if (
@@ -40,14 +32,7 @@ export default class UpdateItemPage extends Component {
     ) {
       return alert("Please enter all item information correctly.");
     }
-    ipcRenderer.send("submitUpdateItem", {
-      name,
-      quantityUnit,
-      stockQuantity,
-      buyingPrice,
-      sellingPrice,
-      details
-    });
+    ipcRenderer.send("submitUpdateItem", this.state);
   };
 
   handleCancel = e => {

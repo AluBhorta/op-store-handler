@@ -62,7 +62,7 @@ function createUpdateItemWindow(item) {
   } = item;
   const url = `http://localhost:${PORT}/update-item?name=${name}&quantityUnit=${quantityUnit}&stockQuantity=${stockQuantity}&buyingPrice=${buyingPrice}&sellingPrice=${sellingPrice}&details=${details}`;
   updateItemWindow.loadURL(url);
-  // updateItemWindow.webContents.openDevTools();
+  updateItemWindow.webContents.openDevTools();
   updateItemWindow.once("ready-to-show", () => updateItemWindow.show());
   updateItemWindow.on("closed", () => (updateItemWindow = null));
 }
@@ -154,8 +154,8 @@ ipcMain.on("showUpdateItemWindow", (e, item) => {
   createUpdateItemWindow(item);
 });
 
-ipcMain.on("submitUpdateItem", (e, itemData) => {
-  console.log("submitting add item:", itemData);
+ipcMain.on("submitUpdateItem", (e, item) => {
+  console.log("submitting add item:", item);
 
   const {
     name,
@@ -164,17 +164,14 @@ ipcMain.on("submitUpdateItem", (e, itemData) => {
     buyingPrice,
     sellingPrice,
     details
-  } = itemData;
+  } = item;
   // ###
   //
   // save updated item record to DB
   // + let user know results
-  // + reload ItemPage with data from DB
 
-  // e.sender.send(
-  //   "itemUpdated",
-  //   "item updated, update ItemPage accordingly"
-  // );
+  const url = `http://localhost:${PORT}/itemPage?name=${name}&quantityUnit=${quantityUnit}&stockQuantity=${stockQuantity}&buyingPrice=${buyingPrice}&sellingPrice=${sellingPrice}&details=${details}`;
+  mainWindow.loadURL(url);
 
   updateItemWindow.close();
   updateItemWindow = null;

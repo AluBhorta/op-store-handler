@@ -37,21 +37,19 @@ class App extends Component {
               <Route
                 path="/update-item"
                 component={({ location }) => {
-                  console.log(location.search);
-                  // ###
-                  //
-                  // pass on the url params to <UpdateItemPage /> as props
-
-                  return <UpdateItemPage />;
+                  const item = qs.parse(location.search, {
+                    ignoreQueryPrefix: true
+                  });
+                  return <UpdateItemPage item={item} />;
                 }}
               />
               <Route
                 path="/itemPage"
                 component={({ location }) => {
-                  const itemData = qs.parse(location.search, {
+                  const item = qs.parse(location.search, {
                     ignoreQueryPrefix: true
                   });
-                  return <ItemPage item={itemData} />;
+                  return <ItemPage item={item} />;
                 }}
               />
               <Route component={ErrorComponent} />
