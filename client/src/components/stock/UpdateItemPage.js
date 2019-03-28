@@ -45,7 +45,10 @@ export default class UpdateItemPage extends Component {
   render() {
     return (
       <div>
-        <h1>Update Item Form</h1>
+        <h2>Update Item Form</h2>
+        <p>
+          You cannot update the item name.
+        </p>
         <form>
           <div className="form-item-info">
             <label>Name: </label>
@@ -54,7 +57,8 @@ export default class UpdateItemPage extends Component {
               name="name"
               placeholder="Enter Item Name"
               value={this.state.name}
-              onChange={this.handleChange}
+              // onChange={this.handleChange}
+              readOnly
             />
             <br />
 

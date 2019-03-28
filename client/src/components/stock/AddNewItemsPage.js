@@ -5,16 +5,39 @@ export default class AddNewItemsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemStatus: "new",
       name: "",
       quantityUnit: "",
       addQuantity: "",
       buyingPrice: "",
       sellingPrice: "",
       details: "",
+      itemStatus: "new",
       showCurrentStockQuantity: false,
-      stockQuantity: ""
+      stockQuantity: "",
+      inputIsEditable: true
     };
+  }
+
+  redirectToUpdateWindow = e => {
+    e.preventDefault()
+    console.log("red");
+    const {
+      name,
+      quantityUnit,
+      stockQuantity,
+      buyingPrice,
+      sellingPrice,
+      details
+    } = this.state
+    
+    ipcRenderer.send("redirectToUpdateItemWindow", {
+      name,
+      quantityUnit,
+      stockQuantity,
+      buyingPrice,
+      sellingPrice,
+      details
+    });
   }
 
   handleChange = e => {
@@ -23,7 +46,9 @@ export default class AddNewItemsPage extends Component {
       ? this.setState({ [name]: checked })
       : this.setState({ [name]: value });
 
-    if (type === "radio") this.setState({ showCurrentStockQuantity: false });
+    if (type === "radio") {
+      this.setState({ showCurrentStockQuantity: false, inputIsEditable: true })
+    }
   };
 
   handleSubmit = e => {
@@ -35,7 +60,8 @@ export default class AddNewItemsPage extends Component {
       addQuantity,
       buyingPrice,
       sellingPrice,
-      details
+      details,
+      itemStatus
     } = this.state;
 
     if (
@@ -53,7 +79,8 @@ export default class AddNewItemsPage extends Component {
       addQuantity,
       buyingPrice,
       sellingPrice,
-      details
+      details,
+      itemStatus
     });
   };
 
@@ -63,7 +90,25 @@ export default class AddNewItemsPage extends Component {
 
     ipcRenderer.send("closeAddItemWindow", "Add new Item Cancelled");
   };
+  
+  handleClear = e => {
+    e.preventDefault();
+    
+    this.setState({
+      name: "",
+      quantityUnit: "",
+      addQuantity: "",
+      buyingPrice: "",
+      sellingPrice: "",
+      details: "",
+      itemStatus: "new",
+      showCurrentStockQuantity: false,
+      stockQuantity: "",
+      inputIsEditable: true
+    })
+  };
 
+  
   handleSearchItem = e => {
     e.preventDefault();
 
@@ -89,12 +134,9 @@ export default class AddNewItemsPage extends Component {
             buyingPrice,
             sellingPrice,
             details,
-            showCurrentStockQuantity: true
+            showCurrentStockQuantity: true,
+            inputIsEditable: false
           });
-
-          // ###
-          //
-          // make the input boxes read only after updating oldItem info
         }
       });
     } else {
@@ -108,6 +150,9 @@ export default class AddNewItemsPage extends Component {
         <h1>Add Items Form</h1>
         <form>
           <div className="form-radio-btns">
+            <p>
+              If the item already exists in Stock select <strong>Old</strong> Otherwise select <strong>New</strong>.
+            </p>
             <label>
               <input
                 type="radio"
@@ -129,6 +174,13 @@ export default class AddNewItemsPage extends Component {
               Old
             </label>
           </div>
+          {this.state.inputIsEditable ? "" : (
+            <p>
+              You can only <strong>Add Quantity</strong> to an old Item here. To update this item information, click below.
+              <br/>
+              <button onClick={this.redirectToUpdateWindow}>Update Old Item</button>
+            </p>
+          )}
           <br />
 
           <div className="form-item-info">
@@ -138,7 +190,7 @@ export default class AddNewItemsPage extends Component {
               name="name"
               placeholder="Enter Item Name"
               value={this.state.name}
-              onChange={this.handleChange}
+              onChange={this.state.inputIsEditable ? this.handleChange : null}
             />
             {this.state.itemStatus === "old" ? (
               <button onClick={this.handleSearchItem}>Search for Item</button>
@@ -152,7 +204,7 @@ export default class AddNewItemsPage extends Component {
               name="quantityUnit"
               placeholder="Enter The Quantity Unit (e.g. Kg/litre/pound/...)"
               value={this.state.quantityUnit}
-              onChange={this.handleChange}
+              onChange={this.state.inputIsEditable ? this.handleChange : null}
             />
             <br />
             <label>Add Quantity: </label>
@@ -184,7 +236,7 @@ export default class AddNewItemsPage extends Component {
               name="buyingPrice"
               placeholder="Enter the Buying Price"
               value={this.state.buyingPrice}
-              onChange={this.handleChange}
+              onChange={this.state.inputIsEditable ? this.handleChange : null}
             />
             <br />
             <label>Selling Price: </label>
@@ -193,7 +245,7 @@ export default class AddNewItemsPage extends Component {
               name="sellingPrice"
               placeholder="Enter the Selling price (you can change it later)"
               value={this.state.sellingPrice}
-              onChange={this.handleChange}
+              onChange={this.state.inputIsEditable ? this.handleChange : null}
             />
             <br />
             <label>Details: </label>
@@ -201,7 +253,7 @@ export default class AddNewItemsPage extends Component {
               name="details"
               placeholder="Enter Item details (Optional)"
               value={this.state.details}
-              onChange={this.handleChange}
+              onChange={this.state.inputIsEditable ? this.handleChange : null}
             />
             <br />
             <br />
@@ -211,6 +263,9 @@ export default class AddNewItemsPage extends Component {
           </button>
           <button name="cancel" onClick={this.handleCancel}>
             Cancel
+          </button>
+          <button name="clear" onClick={this.handleClear}>
+            Clear
           </button>
         </form>
       </div>

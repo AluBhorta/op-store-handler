@@ -3,7 +3,7 @@ const Item = require("./models/Item");
 const PORT = "3000";
 
 // BROWSER-WINDOWS //
-let mainWindow, demoWindow, addItemWindow, updateItemWindow;
+let demoWindow, mainWindow, addItemWindow, updateItemWindow;
 
 //
 // WINDOW CREATION FUNCTIONS  //
@@ -19,15 +19,15 @@ function createMainWindow() {
   });
 
   mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   mainWindow.once("ready-to-show", () => mainWindow.show());
   mainWindow.on("closed", () => (mainWindow = null));
 }
 
 function createAddItemWindow() {
   addItemWindow = new BrowserWindow({
-    width: 650,
-    height: 450,
+    width: 750,
+    height: 550,
     webPreferences: {
       nodeIntegration: true
     },
@@ -43,8 +43,8 @@ function createAddItemWindow() {
 
 function createUpdateItemWindow(item) {
   updateItemWindow = new BrowserWindow({
-    width: 650,
-    height: 450,
+    width: 750,
+    height: 550,
     webPreferences: {
       nodeIntegration: true
     },
@@ -62,12 +62,12 @@ function createUpdateItemWindow(item) {
   } = item;
   const url = `http://localhost:${PORT}/update-item?name=${name}&quantityUnit=${quantityUnit}&stockQuantity=${stockQuantity}&buyingPrice=${buyingPrice}&sellingPrice=${sellingPrice}&details=${details}`;
   updateItemWindow.loadURL(url);
-  updateItemWindow.webContents.openDevTools();
+  // updateItemWindow.webContents.openDevTools();
   updateItemWindow.once("ready-to-show", () => updateItemWindow.show());
   updateItemWindow.on("closed", () => (updateItemWindow = null));
 }
 
-function createWindow2() {
+function createDemoWindow() {
   demoWindow = new BrowserWindow();
   demoWindow.webContents.openDevTools();
   demoWindow.loadFile(__dirname + "/index.html");
@@ -79,7 +79,7 @@ function createWindow2() {
 //
 app.on("ready", createMainWindow);
 
-// app.on("ready", createWindow2);  // for demo
+// app.on("ready", createDemoWindow);  // for demo
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
@@ -108,8 +108,17 @@ ipcMain.on("closeAddItemWindow", (e, msg) => {
   addItemWindow = null;
 });
 
-ipcMain.on("submitAddItem", (e, itemData) => {
-  console.log("submitting add item:", itemData);
+ipcMain.on("redirectToUpdateItemWindow", (e, item) => {
+  console.log("show update window for: ", item);
+  
+  addItemWindow.close();
+  addItemWindow = null;
+
+  createUpdateItemWindow(item);
+})
+
+ipcMain.on("submitAddItem", (e, item) => {
+  console.log("submitting add item:", item);
 
   const {
     name,
@@ -117,15 +126,23 @@ ipcMain.on("submitAddItem", (e, itemData) => {
     addQuantity,
     buyingPrice,
     sellingPrice,
-    details
-  } = itemData;
+    details,
+    itemStatus
+  } = item;
 
   // ###
   //
-  // save the record to DB
+  //  save item to DB accordingly
   // + let user know results
-  // + reload stock table accordingly
+  if(itemStatus === "old"){
+    // if exists addToStockQuantity() in DB 
+    // else alert user of false data
+  } else {  // itemStatus === "new"
+    // check if item with item.name exists
+    // exists ? alert user with error : make new item in DB
+  }
 
+  mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
   addItemWindow.close();
   addItemWindow = null;
 });
@@ -136,7 +153,7 @@ ipcMain.on("searchForOldItem", (e, name) => {
   // ###
   //
   // query DB to check if name exists
-  // + return searched item
+  // return exists ? oldItem : null 
   const searchedItem = {
     quantityUnit: "kg",
     stockQuantity: "200",
