@@ -190,7 +190,9 @@ ipcMain.on("deleteItemFromStock", (e, item) => {
 
   // ###
   //
+  // match item.fields with DB items'
   // delete item from DB
   // + let user know results
-  // + redirect user to stock table
+
+  mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
 });
