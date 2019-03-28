@@ -1,8 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const Item = require("./models/Item");
+const PORT = "3000";
 
 // BROWSER-WINDOWS //
-let mainWindow, demoWindow, additemWindow;
+let mainWindow, demoWindow, addItemWindow, updateItemWindow;
 
 //
 // WINDOW CREATION FUNCTIONS  //
@@ -13,26 +14,57 @@ function createMainWindow() {
     height: 700,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    show: false
   });
-  mainWindow.loadURL("http://localhost:3000/stocks");
+
+  mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
   mainWindow.webContents.openDevTools();
+  mainWindow.once("ready-to-show", () => mainWindow.show());
   mainWindow.on("closed", () => (mainWindow = null));
 }
 
 function createAddItemWindow() {
-  additemWindow = new BrowserWindow({
+  addItemWindow = new BrowserWindow({
     width: 650,
     height: 450,
     webPreferences: {
       nodeIntegration: true
     },
     parent: mainWindow,
-    modal: true
+    modal: true,
+    show: false
   });
-  additemWindow.loadURL("http://localhost:3000/add-new-supply");
-  // additemWindow.webContents.openDevTools();
-  additemWindow.on("closed", () => (additemWindow = null));
+  addItemWindow.loadURL(`http://localhost:${PORT}/add-new-supply`);
+  // addItemWindow.webContents.openDevTools();
+  addItemWindow.once("ready-to-show", () => addItemWindow.show());
+  addItemWindow.on("closed", () => (addItemWindow = null));
+}
+
+function createUpdateItemWindow(item) {
+  updateItemWindow = new BrowserWindow({
+    width: 650,
+    height: 450,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: mainWindow,
+    modal: true,
+    show: false
+  });
+  const {
+    name,
+    quantityUnit,
+    stockQuantity,
+    buyingPrice,
+    sellingPrice,
+    details
+  } = item;
+  const url = `http://localhost:${PORT}/update-item?name=${name}&quantityUnit=${quantityUnit}&stockQuantity=${stockQuantity}&buyingPrice=${buyingPrice}&sellingPrice=${sellingPrice}&details=${details}`;
+  updateItemWindow.loadURL(url);
+  // updateItemWindow.webContents.openDevTools();
+  updateItemWindow.once("ready-to-show", () => updateItemWindow.show());
+  updateItemWindow.on("closed", () => (updateItemWindow = null));
 }
 
 function createWindow2() {
@@ -49,7 +81,7 @@ app.on("ready", createMainWindow);
 
 // app.on("ready", createWindow2);  // for demo
 
-app.on("window-all-closed", function() {
+app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
@@ -61,6 +93,7 @@ app.on("activate", function() {
 // IPC  //
 //
 
+// adding new items
 ipcMain.on("addNewSupply", (e, msg) => {
   console.log(msg);
   createAddItemWindow();
@@ -71,22 +104,22 @@ ipcMain.on("closeAddItemWindow", (e, msg) => {
   //  ###
   //
   // ask user again with a dialogBox
-  additemWindow.close();
-  additemWindow = null;
+  addItemWindow.close();
+  addItemWindow = null;
 });
 
 ipcMain.on("submitAddItem", (e, itemData) => {
   console.log("submitting add item:", itemData);
 
-  const NewItem = new Item(
-    itemData.name,
-    itemData.quantityUnit,
-    itemData.quantity,
-    itemData.buyingPrice,
-    itemData.sellingPrice,
-    itemData.details
-  );
-  console.log(NewItem);
+  const {
+    name,
+    quantityUnit,
+    addQuantity,
+    buyingPrice,
+    sellingPrice,
+    details
+  } = itemData;
+
   // ###
   //
   // save the record to DB + let user know results
@@ -97,8 +130,8 @@ ipcMain.on("submitAddItem", (e, itemData) => {
   //   "new item added to DB, update stock table accordingly"
   // );
 
-  additemWindow.close();
-  additemWindow = null;
+  addItemWindow.close();
+  addItemWindow = null;
 });
 
 ipcMain.on("searchForOldItem", (e, name) => {
@@ -116,4 +149,51 @@ ipcMain.on("searchForOldItem", (e, name) => {
   };
 
   e.sender.send("reply-searchForOldItem", searchedItem);
+});
+
+// updating item
+ipcMain.on("showUpdateItemWindow", (e, item) => {
+  console.log("show update window for: ", item);
+  createUpdateItemWindow(item);
+});
+
+ipcMain.on("submitUpdateItem", (e, itemData) => {
+  console.log("submitting add item:", itemData);
+
+  const {
+    name,
+    quantityUnit,
+    stockQuantity,
+    buyingPrice,
+    sellingPrice,
+    details
+  } = itemData;
+  // ###
+  //
+  // save updated item record to DB + display updated info in ItemPage+ let user know results
+
+  // + update ItemPage accordingly
+  // e.sender.send(
+  //   "itemUpdated",
+  //   "item updated, update ItemPage accordingly"
+  // );
+
+  updateItemWindow.close();
+  updateItemWindow = null;
+});
+
+ipcMain.on("closeUpdateItemWindow", (e, args) => {
+  console.log(args);
+
+  updateItemWindow.close();
+  updateItemWindow = null;
+});
+
+// delete item
+ipcMain.on("deleteItemFromStock", (e, item) => {
+  console.log("bout to delete this bad boy", item);
+
+  // ###
+  //
+  // delete item from DB + redirect user to stock table + let user know result
 });
