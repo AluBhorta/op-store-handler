@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "client": "cd ./public && npm start"
+    "client": "cd ./client && npm start"
   },
   "author": "AluBhorta",
   "license": "GNU",
