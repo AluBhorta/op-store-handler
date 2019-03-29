@@ -46,9 +46,7 @@ export default class UpdateItemPage extends Component {
     return (
       <div>
         <h2>Update Item Form</h2>
-        <p>
-          You cannot update the item name.
-        </p>
+        <p>Item name cannot be changed.</p>
         <form>
           <div className="form-item-info">
             <label>Name: </label>
@@ -57,7 +55,6 @@ export default class UpdateItemPage extends Component {
               name="name"
               placeholder="Enter Item Name"
               value={this.state.name}
-              // onChange={this.handleChange}
               readOnly
             />
             <br />
@@ -80,6 +77,10 @@ export default class UpdateItemPage extends Component {
               value={this.state.stockQuantity}
               onChange={this.handleChange}
             />
+            <span>
+              {" "}
+              It is recommended not to change the Stock Quantity here.
+            </span>
             <br />
 
             <label>Buying Price: </label>

@@ -19,7 +19,7 @@ export default class AddNewItemsPage extends Component {
   }
 
   redirectToUpdateWindow = e => {
-    e.preventDefault()
+    e.preventDefault();
     console.log("red");
     const {
       name,
@@ -28,8 +28,8 @@ export default class AddNewItemsPage extends Component {
       buyingPrice,
       sellingPrice,
       details
-    } = this.state
-    
+    } = this.state;
+
     ipcRenderer.send("redirectToUpdateItemWindow", {
       name,
       quantityUnit,
@@ -38,7 +38,7 @@ export default class AddNewItemsPage extends Component {
       sellingPrice,
       details
     });
-  }
+  };
 
   handleChange = e => {
     const { name, value, type, checked } = e.target;
@@ -47,7 +47,7 @@ export default class AddNewItemsPage extends Component {
       : this.setState({ [name]: value });
 
     if (type === "radio") {
-      this.setState({ showCurrentStockQuantity: false, inputIsEditable: true })
+      this.setState({ showCurrentStockQuantity: false, inputIsEditable: true });
     }
   };
 
@@ -90,10 +90,10 @@ export default class AddNewItemsPage extends Component {
 
     ipcRenderer.send("closeAddItemWindow", "Add new Item Cancelled");
   };
-  
+
   handleClear = e => {
     e.preventDefault();
-    
+
     this.setState({
       name: "",
       quantityUnit: "",
@@ -105,10 +105,9 @@ export default class AddNewItemsPage extends Component {
       showCurrentStockQuantity: false,
       stockQuantity: "",
       inputIsEditable: true
-    })
+    });
   };
 
-  
   handleSearchItem = e => {
     e.preventDefault();
 
@@ -151,7 +150,10 @@ export default class AddNewItemsPage extends Component {
         <form>
           <div className="form-radio-btns">
             <p>
-              If the item already exists in Stock select <strong>Old</strong> Otherwise select <strong>New</strong>.
+              If the Item already exists in Stock, select <strong>Old</strong>
+              {". "}
+              <br />
+              If it is a new Item select <strong>New</strong>.
             </p>
             <label>
               <input
@@ -174,11 +176,16 @@ export default class AddNewItemsPage extends Component {
               Old
             </label>
           </div>
-          {this.state.inputIsEditable ? "" : (
+          {this.state.inputIsEditable ? (
+            ""
+          ) : (
             <p>
-              You can only <strong>Add Quantity</strong> to an old Item here. To update this item information, click below.
-              <br/>
-              <button onClick={this.redirectToUpdateWindow}>Update Old Item</button>
+              You can only <strong>Add Quantity</strong> to an old Item here. To
+              update this item information, click below.
+              <br />
+              <button onClick={this.redirectToUpdateWindow}>
+                Update Old Item
+              </button>
             </p>
           )}
           <br />
@@ -207,11 +214,11 @@ export default class AddNewItemsPage extends Component {
               onChange={this.state.inputIsEditable ? this.handleChange : null}
             />
             <br />
-            <label>Add Quantity: </label>
+            <label>Add Quantity (to Stock): </label>
             <input
               type="text"
               name="addQuantity"
-              placeholder="Enter the Quantity to be added"
+              placeholder="Enter the Quantity to be added to Stock"
               value={this.state.addQuantity}
               onChange={this.handleChange}
             />

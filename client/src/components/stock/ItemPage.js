@@ -36,8 +36,8 @@ export default function ItemPage({ item }) {
     <div>
       <h1>Item Page</h1>
       <div className="item-page-btns">
-        <button onClick={() => updateItem(item)}>Update</button>
-        <button onClick={() => deleteItem(item)}>Delete</button>
+        <button onClick={() => updateItem(item)}>Update Item</button>
+        <button onClick={() => deleteItem(item)}>Delete Item</button>
       </div>
 
       <div className="item-details">

@@ -9,6 +9,7 @@ import ItemPage from "./components/stock/ItemPage";
 import UpdateItemPage from "./components/stock/UpdateItemPage";
 import ErrorComponent from "./components/ErrorComponent";
 import qs from "qs";
+import AddNewOrderPage from "./components/order/AddNewOrderPage";
 
 // const { ipcRenderer } = window.require("electron");
 
@@ -52,6 +53,7 @@ class App extends Component {
                   return <ItemPage item={item} />;
                 }}
               />
+              <Route path="/add-new-order" component={AddNewOrderPage} />
               <Route component={ErrorComponent} />
             </Switch>
           </div>

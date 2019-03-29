@@ -47,7 +47,7 @@ export default class Stocks extends Component {
     return (
       <div>
         <h1>Stocks</h1>
-        <button onClick={this.addNewSupply}>Add New Suppy (Items)</button>
+        <button onClick={this.addNewSupply}>Add Item Suppy</button>
         <StockTable
           stockItems={this.state.stockItems}
           handleTableRowClick={this.handleTableRowClick}

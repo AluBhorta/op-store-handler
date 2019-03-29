@@ -18,7 +18,7 @@ function createMainWindow() {
     show: false
   });
 
-  mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
+  mainWindow.loadURL(`http://localhost:${PORT}/orders`);
   // mainWindow.webContents.openDevTools();
   mainWindow.once("ready-to-show", () => mainWindow.show());
   mainWindow.on("closed", () => (mainWindow = null));
@@ -67,6 +67,23 @@ function createUpdateItemWindow(item) {
   updateItemWindow.on("closed", () => (updateItemWindow = null));
 }
 
+function createAddOrderWindow() {
+  addItemWindow = new BrowserWindow({
+    width: 750,
+    height: 550,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    parent: mainWindow,
+    modal: true,
+    show: false
+  });
+  addItemWindow.loadURL(`http://localhost:${PORT}/add-new-order`);
+  // addItemWindow.webContents.openDevTools();
+  addItemWindow.once("ready-to-show", () => addItemWindow.show());
+  addItemWindow.on("closed", () => (addItemWindow = null));
+}
+
 function createDemoWindow() {
   demoWindow = new BrowserWindow();
   demoWindow.webContents.openDevTools();
@@ -85,7 +102,7 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-app.on("activate", function() {
+app.on("activate", () => {
   if (mainWindow === null) createMainWindow();
 });
 
@@ -93,7 +110,8 @@ app.on("activate", function() {
 // IPC  //
 //
 
-// adding new items
+// IPC - adding new items
+
 ipcMain.on("addNewSupply", (e, msg) => {
   console.log(msg);
   createAddItemWindow();
@@ -110,12 +128,12 @@ ipcMain.on("closeAddItemWindow", (e, msg) => {
 
 ipcMain.on("redirectToUpdateItemWindow", (e, item) => {
   console.log("show update window for: ", item);
-  
+
   addItemWindow.close();
   addItemWindow = null;
 
   createUpdateItemWindow(item);
-})
+});
 
 ipcMain.on("submitAddItem", (e, item) => {
   console.log("submitting add item:", item);
@@ -134,10 +152,11 @@ ipcMain.on("submitAddItem", (e, item) => {
   //
   //  save item to DB accordingly
   // + let user know results
-  if(itemStatus === "old"){
-    // if exists addToStockQuantity() in DB 
+  if (itemStatus === "old") {
+    // if exists addToStockQuantity() in DB
     // else alert user of false data
-  } else {  // itemStatus === "new"
+  } else {
+    // itemStatus === "new"
     // check if item with item.name exists
     // exists ? alert user with error : make new item in DB
   }
@@ -153,7 +172,7 @@ ipcMain.on("searchForOldItem", (e, name) => {
   // ###
   //
   // query DB to check if name exists
-  // return exists ? oldItem : null 
+  // return exists ? oldItem : null
   const searchedItem = {
     quantityUnit: "kg",
     stockQuantity: "200",
@@ -165,7 +184,8 @@ ipcMain.on("searchForOldItem", (e, name) => {
   e.sender.send("reply-searchForOldItem", searchedItem);
 });
 
-// updating item
+// IPC - updating item
+
 ipcMain.on("showUpdateItemWindow", (e, item) => {
   console.log("show update window for: ", item);
   createUpdateItemWindow(item);
@@ -201,7 +221,8 @@ ipcMain.on("closeUpdateItemWindow", (e, args) => {
   updateItemWindow = null;
 });
 
-// delete item
+// IPC - delete item
+
 ipcMain.on("deleteItemFromStock", (e, item) => {
   console.log("bout to delete this bad boy", item);
 
@@ -212,4 +233,11 @@ ipcMain.on("deleteItemFromStock", (e, item) => {
   // + let user know results
 
   mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
+});
+
+// IPC - add Orders
+
+ipcMain.on("addNewOrder", (e, msg) => {
+  console.log(msg);
+  createAddOrderWindow();
 });

@@ -19,9 +19,6 @@ export default withRouter(function Navigation({ location }) {
             <li>
               <Link to="/orders">Orders</Link>
             </li>
-            <li>
-              <Link to="/itemPage">Item Page</Link>
-            </li>
           </ul>
         </div>
       ) : (

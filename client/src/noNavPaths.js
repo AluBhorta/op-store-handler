@@ -1,1 +1,1 @@
-module.exports = ["/add-new-supply", "/update-item"];
+module.exports = ["/add-new-supply", "/update-item", "/add-new-order"];
