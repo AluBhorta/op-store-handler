@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 const smalltalk = require("smalltalk");
 const { ipcRenderer } = window.require("electron");
-const { itemNames } = require("./fakeOrderData");
+const { items } = require("./fakeOrderData");
 
 export default class AddNewOrderPage extends Component {
   constructor(props) {
@@ -9,30 +9,38 @@ export default class AddNewOrderPage extends Component {
     this.state = {
       searchItemName: "",
       serachedItems: [],
-      cartItemNames: [],
-      cartItemQuantities: []
+      cartItems: []
     };
   }
 
   handleClear = e => {
-    this.setState({
-      searchItemName: "",
-      serachedItems: [],
-      cartItemNames: [],
-      cartItemQuantities: []
-    });
+    smalltalk
+      .confirm("Clear Cart?", "Are you sure you want to empty your cart?")
+      .then(() =>
+        this.setState({
+          searchItemName: "",
+          serachedItems: [],
+          cartItems: []
+        })
+      )
+      .catch(() => console.log("nope"));
   };
 
   handleCancel = e => {
-    console.log("cancel action; may ask user again...");
-
-    ipcRenderer.send("closeNewOrderWindow", "Add new Order cancelled");
+    smalltalk
+      .confirm("Close Order?", "Are you sure you want to close this Order?")
+      .then(() =>
+        ipcRenderer.send("closeNewOrderWindow", "Add new Order cancelled")
+      )
+      .catch(() => console.log("nope"));
   };
 
-  // ###
-  //
-  // onsubmit - confirm order, submit to db, generate a pdf recepit
-  // onCancel - close window
+  handleSubmit = e => {
+    smalltalk
+      .confirm("Comfirm Order?", "Are you sure you want to submit this Order?")
+      .then(() => ipcRenderer.send("submitNewOrder", this.state.cartItems))
+      .catch(() => console.log("nope"));
+  };
 
   handleInputChange = e => {
     let { name, value } = e.target;
@@ -40,78 +48,98 @@ export default class AddNewOrderPage extends Component {
 
     // ###
     //
-    // query DB to find if items match with "value" & return results array
+    // query DB to find if item.name with "value"
+    //  return results array of [name, price, stockQuantity]
 
-    this.setState({ serachedItems: itemNames });
+    this.setState({ serachedItems: items });
   };
 
-  handleSearchResultClick = itemName => {
-    let showWarning = false;
+  handleSearchResultClick = item => {
     this.setState(ps => {
-      if (ps.cartItemNames.includes(itemName)) {
-        showWarning = true;
-        alert("You stupid? Item already in Cart.");
+      if (ps.cartItems.includes(item.name)) {
+        smalltalk
+          .alert("You stupid?", "Item already in Cart.")
+          .catch(err => console.log(err));
         return ps;
       } else {
-        ps.cartItemNames.push(itemName);
-        ps.cartItemQuantities.push(1);
+        item.orderQuantity = 1;
+        ps.cartItems.push(item);
         return ps;
       }
     });
-    if (showWarning) {
-      smalltalk
-        .alert("You stupid?", "Item already in Cart.")
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-      // ###
-      //
-      // why doesn't this hit?
-    }
+  };
+
+  handleClearSearchResults = e => {
+    this.setState({ searchItemName: "", serachedItems: [] });
   };
 
   handleCartItemRemove = index => {
     this.setState(ps => {
-      ps.cartItemNames.splice(index, 1);
+      ps.cartItems.splice(index, 1);
       return ps;
     });
   };
 
   handlePlusQuantity = index => {
-    this.setState(ps => ps.cartItemQuantities[index]++);
+    this.setState(ps => {
+      if (
+        ps.cartItems[index].orderQuantity < ps.cartItems[index].stockQuantity
+      ) {
+        return ps.cartItems[index].orderQuantity++;
+      }
+      smalltalk
+        .alert(
+          "Max limit reached",
+          "Cannot add more order quantity as no more items in stock."
+        )
+        .catch(err => console.log(err));
+      return ps;
+    });
   };
+
   handleMinusQuantity = index => {
     this.setState(ps => {
-      return ps.cartItemQuantities[index] > 0
-        ? ps.cartItemQuantities[index]--
+      return ps.cartItems[index].orderQuantity > 1
+        ? ps.cartItems[index].orderQuantity--
         : ps;
     });
   };
 
   render() {
-    const listItems = this.state.serachedItems.map((itemName, index) => (
-      <li key={index} onClick={() => this.handleSearchResultClick(itemName)}>
-        {itemName}
+    const listItems = this.state.serachedItems.map((item, index) => (
+      <li key={index} onClick={() => this.handleSearchResultClick(item)}>
+        {item.name} | Price: {item.price}
       </li>
     ));
 
-    const cartItems = this.state.cartItemNames.map((cartItem, index) => (
+    const cartItems = this.state.cartItems.map((cartItem, index) => (
       <div key={index} className="cart-item">
-        <span>{cartItem}</span>
+        <span>
+          {cartItem.name} | Unit Price: {cartItem.price}
+        </span>
         <button onClick={() => this.handleCartItemRemove(index)}>Remove</button>
         <div>
-          <span>Quantity: {this.state.cartItemQuantities[index]}</span>
+          <span>
+            Quantity: {cartItem.orderQuantity} | Total Price:{" "}
+            {cartItem.orderQuantity * cartItem.price}
+          </span>
           <button onClick={() => this.handlePlusQuantity(index)}>
-            {" "}
-            + Quantity{" "}
+            + Quantity
           </button>
           <button onClick={() => this.handleMinusQuantity(index)}>
-            {" "}
-            - Quantity{" "}
+            - Quantity
           </button>
         </div>
         <hr />
       </div>
     ));
+
+    const totalBill =
+      this.state.cartItems.length === 0
+        ? 0
+        : this.state.cartItems.reduce((total, item) => {
+            return total + item.orderQuantity * item.price;
+          }, 0);
 
     return (
       <div>
@@ -139,11 +167,17 @@ export default class AddNewOrderPage extends Component {
               Cancel
             </button>
             <button name="clear" onClick={this.handleClear}>
-              Clear
+              Clear Cart
             </button>
+            <div>
+              <p>Total Bill: {totalBill}</p>
+            </div>
           </div>
           <div className="order-search-results">
             <h4>Search Results.</h4>
+            <button onClick={this.handleClearSearchResults}>
+              Clear Search Results
+            </button>
             {this.state.serachedItems.length === 0 ? (
               ""
             ) : (

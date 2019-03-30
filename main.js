@@ -247,3 +247,18 @@ ipcMain.on("closeNewOrderWindow", (e, msg) => {
   addOrderWindow.close();
   addOrderWindow = null;
 });
+
+ipcMain.on("submitNewOrder", (e, orderedItems) => {
+  console.log("create new Order for items: ", orderedItems);
+
+  // ###
+  //
+  // init new order: Date() instance, calc totalBill, number of items,
+  // save order to DB
+  // ?inform user
+
+  mainWindow.loadURL(`http://localhost:${PORT}/orders`);
+
+  addOrderWindow.close();
+  addOrderWindow = null;
+});
