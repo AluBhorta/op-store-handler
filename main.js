@@ -3,7 +3,7 @@ const Item = require("./models/Item");
 const PORT = "3000";
 
 // BROWSER-WINDOWS //
-let demoWindow, mainWindow, addItemWindow, updateItemWindow;
+let demoWindow, mainWindow, addItemWindow, updateItemWindow, addOrderWindow;
 
 //
 // WINDOW CREATION FUNCTIONS  //
@@ -68,9 +68,9 @@ function createUpdateItemWindow(item) {
 }
 
 function createAddOrderWindow() {
-  addItemWindow = new BrowserWindow({
-    width: 750,
-    height: 550,
+  addOrderWindow = new BrowserWindow({
+    width: 950,
+    height: 750,
     webPreferences: {
       nodeIntegration: true
     },
@@ -78,10 +78,10 @@ function createAddOrderWindow() {
     modal: true,
     show: false
   });
-  addItemWindow.loadURL(`http://localhost:${PORT}/add-new-order`);
-  // addItemWindow.webContents.openDevTools();
-  addItemWindow.once("ready-to-show", () => addItemWindow.show());
-  addItemWindow.on("closed", () => (addItemWindow = null));
+  addOrderWindow.loadURL(`http://localhost:${PORT}/add-new-order`);
+  addOrderWindow.webContents.openDevTools();
+  addOrderWindow.once("ready-to-show", () => addOrderWindow.show());
+  addOrderWindow.on("closed", () => (addOrderWindow = null));
 }
 
 function createDemoWindow() {
@@ -240,4 +240,10 @@ ipcMain.on("deleteItemFromStock", (e, item) => {
 ipcMain.on("addNewOrder", (e, msg) => {
   console.log(msg);
   createAddOrderWindow();
+});
+
+ipcMain.on("closeNewOrderWindow", (e, msg) => {
+  console.log(msg);
+  addOrderWindow.close();
+  addOrderWindow = null;
 });

@@ -11,7 +11,8 @@
   "license": "GNU",
   "dependencies": {
     "electron": "^4.0.8",
-    "qs": "^6.7.0"
+    "qs": "^6.7.0",
+    "smalltalk": "^3.2.2"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

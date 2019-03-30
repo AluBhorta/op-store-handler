@@ -150,8 +150,7 @@ export default class AddNewItemsPage extends Component {
         <form>
           <div className="form-radio-btns">
             <p>
-              If the Item already exists in Stock, select <strong>Old</strong>
-              {". "}
+              If the Item already exists in Stock, select <strong>Old</strong>.
               <br />
               If it is a new Item select <strong>New</strong>.
             </p>
@@ -265,15 +264,17 @@ export default class AddNewItemsPage extends Component {
             <br />
             <br />
           </div>
-          <button name="submit" onClick={this.handleSubmit}>
-            Submit
-          </button>
-          <button name="cancel" onClick={this.handleCancel}>
-            Cancel
-          </button>
-          <button name="clear" onClick={this.handleClear}>
-            Clear
-          </button>
+          <div className="form-btn">
+            <button name="submit" onClick={this.handleSubmit}>
+              Submit
+            </button>
+            <button name="cancel" onClick={this.handleCancel}>
+              Cancel
+            </button>
+            <button name="clear" onClick={this.handleClear}>
+              Clear
+            </button>
+          </div>
         </form>
       </div>
     );

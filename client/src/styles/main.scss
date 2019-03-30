@@ -1,0 +1,11 @@
+.order-page-container {
+  background-color: coral;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  & > div {
+    min-width: 150px;
+    min-height: 150px;
+    border: 1px solid black;
+  }
+}

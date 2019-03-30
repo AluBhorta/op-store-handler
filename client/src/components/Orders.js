@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import OrderHistoryTable from "./order/OrderHistoryTable";
 const { ipcRenderer } = window.require("electron");
 
 export default class Orders extends Component {
@@ -19,7 +20,7 @@ export default class Orders extends Component {
 
   addNewOrder = () => {
     console.log("Open form to add new order");
-    ipcRenderer.send("addNewOrder", "open add item window");
+    ipcRenderer.send("addNewOrder", "open add order window");
 
     // ###
     //
@@ -45,7 +46,7 @@ export default class Orders extends Component {
       <div>
         <h1>Orders</h1>
         <button onClick={this.addNewOrder}>Add New Order</button>
-        <p>Table containing orders Data</p>
+        <OrderHistoryTable />
       </div>
     );
   }
