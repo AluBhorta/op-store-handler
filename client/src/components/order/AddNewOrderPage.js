@@ -36,10 +36,19 @@ export default class AddNewOrderPage extends Component {
   };
 
   handleSubmit = e => {
-    smalltalk
-      .confirm("Comfirm Order?", "Are you sure you want to submit this Order?")
-      .then(() => ipcRenderer.send("submitNewOrder", this.state.cartItems))
-      .catch(() => console.log("nope"));
+    if (this.state.cartItems.length !== 0) {
+      smalltalk
+        .confirm(
+          "Comfirm Order?",
+          "Are you sure you want to submit this Order?"
+        )
+        .then(() => ipcRenderer.send("submitNewOrder", this.state.cartItems))
+        .catch(() => console.log("nope"));
+    } else {
+      smalltalk
+        .alert("Cart Empty!", "Add items to the Cart before submitting.")
+        .catch(err => console.log(err));
+    }
   };
 
   handleInputChange = e => {
@@ -56,7 +65,7 @@ export default class AddNewOrderPage extends Component {
 
   handleSearchResultClick = item => {
     this.setState(ps => {
-      if (ps.cartItems.includes(item.name)) {
+      if (ps.cartItems.includes(item)) {
         smalltalk
           .alert("You stupid?", "Item already in Cart.")
           .catch(err => console.log(err));
@@ -161,10 +170,10 @@ export default class AddNewOrderPage extends Component {
           </div>
           <div className="order-btns">
             <button name="submit" onClick={this.handleSubmit}>
-              Submit
+              Submit Order
             </button>
             <button name="cancel" onClick={this.handleCancel}>
-              Cancel
+              Cancel Order
             </button>
             <button name="clear" onClick={this.handleClear}>
               Clear Cart
