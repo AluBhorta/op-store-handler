@@ -26,14 +26,18 @@ export default class Orders extends Component {
   };
 
   handleTableRowClick = order => {
+    // ###
+    //
+    // implement the url by learning to implement nested objects
+
     const { orderId, date, totalBill, items } = order;
 
     let url = `/orderHistoryPage?`;
 
-    // ###
-    //
-    // implement the url by learning to implement nested objects
-    // url += `orderId=${orderId}&date=${date}&totalBill=${totalBill}&`;
+    let stringyItems = JSON.stringify(items);
+
+    url += `orderId=${orderId}&date=${date}&totalBill=${totalBill}&items=${stringyItems}`;
+
     // items.forEach((item, index) => {
     //   url += `name=${item.name}&price=${item.price}&orderQuantity=${
     //     item.orderQuantity

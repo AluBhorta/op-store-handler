@@ -62,6 +62,8 @@ class App extends Component {
                   const order = qs.parse(location.search, {
                     ignoreQueryPrefix: true
                   });
+                  order.items = JSON.parse(order.items);
+
                   return <OrderHistoryPage order={order} />;
                 }}
               />

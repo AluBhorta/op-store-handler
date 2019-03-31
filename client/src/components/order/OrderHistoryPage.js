@@ -12,9 +12,10 @@ const deleteItem = order => {
 
 export default function OrderHistoryPage({ order }) {
   const { orderId, date, totalBill, items } = order;
-  // const orderItems = items.map((item, index) => (
-  //   <li key={index}>{item.name}</li>
-  // ));
+
+  const orderItems = items.map((item, index) => (
+    <li key={index}>{item.name}</li>
+  ));
 
   return (
     <div>
@@ -30,7 +31,7 @@ export default function OrderHistoryPage({ order }) {
           <p>name: {totalBill}</p>
           <div>
             <h3>Items</h3>
-            {/* <ul>{orderItems}</ul> */}
+            <ul>{orderItems}</ul>
           </div>
         </div>
       </div>

@@ -19,7 +19,7 @@ function createMainWindow() {
   });
 
   mainWindow.loadURL(`http://localhost:${PORT}/orders`);
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
   mainWindow.once("ready-to-show", () => mainWindow.show());
   mainWindow.on("closed", () => (mainWindow = null));
 }
