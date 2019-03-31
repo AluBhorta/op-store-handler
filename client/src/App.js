@@ -10,6 +10,7 @@ import UpdateItemPage from "./components/stock/UpdateItemPage";
 import ErrorComponent from "./components/ErrorComponent";
 import qs from "qs";
 import AddNewOrderPage from "./components/order/AddNewOrderPage";
+import OrderHistoryPage from "./components/order/OrderHistoryPage";
 
 // const { ipcRenderer } = window.require("electron");
 
@@ -53,7 +54,17 @@ class App extends Component {
                   return <ItemPage item={item} />;
                 }}
               />
+
               <Route path="/add-new-order" component={AddNewOrderPage} />
+              <Route
+                path="/orderHistoryPage"
+                component={({ location }) => {
+                  const order = qs.parse(location.search, {
+                    ignoreQueryPrefix: true
+                  });
+                  return <OrderHistoryPage order={order} />;
+                }}
+              />
               <Route component={ErrorComponent} />
             </Switch>
           </div>

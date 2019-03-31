@@ -52,15 +52,16 @@ export default class AddNewOrderPage extends Component {
   };
 
   handleInputChange = e => {
-    let { name, value } = e.target;
+    const { name, value } = e.target;
     this.setState({ [name]: value });
 
     // ###
     //
-    // query DB to find if item.name with "value"
-    //  return results array of [name, price, stockQuantity]
-
-    this.setState({ serachedItems: items });
+    // query DB to find if any item.name matches with "value"
+    // return results array of [name, price, stockQuantity]
+    value === ""
+      ? this.setState({ serachedItems: [] })
+      : this.setState({ serachedItems: items });
   };
 
   handleSearchResultClick = item => {
@@ -97,10 +98,7 @@ export default class AddNewOrderPage extends Component {
         return ps.cartItems[index].orderQuantity++;
       }
       smalltalk
-        .alert(
-          "Max limit reached",
-          "Cannot add more order quantity as no more items in stock."
-        )
+        .alert("Max limit reached", "Cannot add more quantity as out of stock.")
         .catch(err => console.log(err));
       return ps;
     });
@@ -162,7 +160,7 @@ export default class AddNewOrderPage extends Component {
                 name="searchItemName"
                 placeholder="Enter Item name"
                 value={this.state.searchItemName}
-                onInput={this.handleInputChange}
+                onChange={this.handleInputChange}
                 autoFocus
               />
               <br />

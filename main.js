@@ -262,3 +262,15 @@ ipcMain.on("submitNewOrder", (e, orderedItems) => {
   addOrderWindow.close();
   addOrderWindow = null;
 });
+
+ipcMain.on("deleteOrderFromStock", (e, order) => {
+  console.log("bout to delete this bad boy", order);
+
+  // ###
+  //
+  // match order.fields with DB orders'
+  // delete order from DB
+  // + let user know results
+
+  mainWindow.loadURL(`http://localhost:${PORT}/orders`);
+});

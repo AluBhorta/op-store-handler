@@ -1,6 +1,6 @@
 import React from "react";
 const { ipcRenderer } = window.require("electron");
-const { dialog } = window.require("electron").remote;
+const smalltalk = require("smalltalk");
 
 const updateItem = item => {
   console.log("update Item");
@@ -9,17 +9,11 @@ const updateItem = item => {
 };
 
 const deleteItem = item => {
-  console.log("delete Item", item);
-  const options = {
-    type: "question",
-    buttons: ["Yes", "No"], // {yes: 0, no:1}
-    title: "Delete Item?",
-    message: "Are you sure you want to delete this Item?",
-    detail: `Pressing Yes will permanently delete ${item.name} stock.`
-  };
-  dialog.showMessageBox(null, options, res => {
-    return res === 0 ? ipcRenderer.send("deleteItemFromStock", item) : null;
-  });
+  console.log("delete Item?", item);
+  smalltalk
+    .confirm("Delete Item?", "Are you sure you want to delete this Item?")
+    .then(() => ipcRenderer.send("deleteItemFromStock", item))
+    .catch(() => console.log("nope"));
 };
 
 export default function ItemPage({ item }) {

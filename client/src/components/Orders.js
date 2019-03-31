@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import OrderHistoryTable from "./order/OrderHistoryTable";
+import { fakeOrders } from "./order/fakeOrderData";
 const { ipcRenderer } = window.require("electron");
 
 export default class Orders extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stockItems: [],
+      orders: [],
       history: props.history
     };
   }
@@ -14,29 +15,30 @@ export default class Orders extends Component {
   componentDidMount = () => {
     // ###
     //
-    // update state.stockItems via API call to DB
-    // this.setState({ stockItems: [] }); // fakeData
+    // update state.orders via API call to DB
+    // this.setState({ orders: [] }); // fakeData
+    this.setState({ orders: fakeOrders });
   };
 
   addNewOrder = () => {
     console.log("Open form to add new order");
     ipcRenderer.send("addNewOrder", "open add order window");
+  };
+
+  handleTableRowClick = order => {
+    const { orderId, date, totalBill, items } = order;
+
+    let url = `/orderHistoryPage?`;
 
     // ###
     //
-    // reload OrderHistory
-  };
-
-  handleTableRowClick = item => {
-    const {
-      name,
-      quantityUnit,
-      stockQuantity,
-      buyingPrice,
-      sellingPrice,
-      details
-    } = item;
-    const url = `/itemPage?name=${name}&quantityUnit=${quantityUnit}&stockQuantity=${stockQuantity}&buyingPrice=${buyingPrice}&sellingPrice=${sellingPrice}&details=${details}`;
+    // implement the url by learning to implement nested objects
+    // url += `orderId=${orderId}&date=${date}&totalBill=${totalBill}&`;
+    // items.forEach((item, index) => {
+    //   url += `name=${item.name}&price=${item.price}&orderQuantity=${
+    //     item.orderQuantity
+    //   }&quantityUnit=${item.quantityUnit}&`;
+    // });
 
     this.state.history.push(url);
   };
@@ -46,7 +48,10 @@ export default class Orders extends Component {
       <div>
         <h1>Orders</h1>
         <button onClick={this.addNewOrder}>Add New Order</button>
-        <OrderHistoryTable />
+        <OrderHistoryTable
+          orders={this.state.orders}
+          handleTableRowClick={this.handleTableRowClick}
+        />
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 const { ipcRenderer } = window.require("electron");
+const smalltalk = require("smalltalk");
 
 export default class AddNewItemsPage extends Component {
   constructor(props) {
@@ -71,7 +72,12 @@ export default class AddNewItemsPage extends Component {
       buyingPrice === "" ||
       sellingPrice === ""
     ) {
-      return alert("Please enter all item information correctly.");
+      return smalltalk
+        .alert(
+          "Missing information",
+          "Please enter all item information correctly."
+        )
+        .catch(err => console.log(err));
     }
     ipcRenderer.send("submitAddItem", {
       name,
@@ -117,7 +123,9 @@ export default class AddNewItemsPage extends Component {
 
       ipcRenderer.on("reply-searchForOldItem", (e, res) => {
         if (res === null) {
-          alert(`No item named ${name} found.`);
+          smalltalk
+            .alert("No match found", `No item named ${name} found.`)
+            .catch(err => console.log(err));
         } else {
           const {
             quantityUnit,
@@ -139,7 +147,9 @@ export default class AddNewItemsPage extends Component {
         }
       });
     } else {
-      window.alert("Please enter a valid name!");
+      smalltalk
+        .alert("Invalid name", `Please enter a valid name!`)
+        .catch(err => console.log(err));
     }
   };
 
