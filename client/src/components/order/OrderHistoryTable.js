@@ -3,6 +3,7 @@ import React from "react";
 export default function OrderHistoryTable({ orders, handleTableRowClick }) {
   const orderHistoryContents = orders.map((order, index) => (
     <tr
+      key={index}
       className="table-row"
       id={`tr${index}`}
       onClick={() => handleTableRowClick(order)}
@@ -17,13 +18,15 @@ export default function OrderHistoryTable({ orders, handleTableRowClick }) {
     <div>
       <h1>Order History Table</h1>
       <table>
-        <tr className="table-headers">
-          <th className="table-header">Order Id</th>
-          <th className="table-header">Date</th>
-          <th className="table-header">Total Bill</th>
-          <th className="table-header">Number Of Items</th>
-        </tr>
-        {orderHistoryContents}
+        <tbody>
+          <tr className="table-headers">
+            <th className="table-header">Order Id</th>
+            <th className="table-header">Date</th>
+            <th className="table-header">Total Bill</th>
+            <th className="table-header">Number Of Items</th>
+          </tr>
+          {orderHistoryContents}
+        </tbody>
       </table>
     </div>
   );

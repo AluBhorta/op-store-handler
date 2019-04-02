@@ -12,7 +12,6 @@ const deleteItem = order => {
 
 export default function OrderHistoryPage({ order }) {
   const { orderId, date, totalBill, items } = order;
-
   const orderItems = items.map((item, index) => (
     <li key={index}>{item.name}</li>
   ));

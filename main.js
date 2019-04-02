@@ -5,6 +5,14 @@ const PORT = "3000";
 // BROWSER-WINDOWS //
 let demoWindow, mainWindow, addItemWindow, updateItemWindow, addOrderWindow;
 
+// DB client
+// var knex = require("knex")({
+//   client: "sqlite3",
+//   connection: {
+//     filename: "./db.sqlite"
+//   }
+// });
+
 //
 // WINDOW CREATION FUNCTIONS  //
 //
@@ -18,7 +26,7 @@ function createMainWindow() {
     show: false
   });
 
-  mainWindow.loadURL(`http://localhost:${PORT}/orders`);
+  mainWindow.loadURL(`http://localhost:${PORT}/`);
   mainWindow.webContents.openDevTools();
   mainWindow.once("ready-to-show", () => mainWindow.show());
   mainWindow.on("closed", () => (mainWindow = null));
@@ -253,7 +261,7 @@ ipcMain.on("submitNewOrder", (e, orderedItems) => {
 
   // ###
   //
-  // init new order: Date() instance, calc totalBill, number of items,
+  // init new order: orderID, Date(), calc totalBill, number of items,
   // save order to DB
   // ?inform user
 
@@ -273,4 +281,19 @@ ipcMain.on("deleteOrderFromStock", (e, order) => {
   // + let user know results
 
   mainWindow.loadURL(`http://localhost:${PORT}/orders`);
+});
+
+ipcMain.on("loginSubmit", (e, { username, password }) => {
+  // ###
+  //
+  // query DB to check if loginData.username & loginData.password exists ?
+  // return bool
+  const isValidUser = true;
+
+  e.sender.send("reply-loginSubmit", { isValidUser: isValidUser, username });
+});
+
+ipcMain.on("closeApp", (e, msg) => {
+  console.log(msg);
+  app.quit();
 });

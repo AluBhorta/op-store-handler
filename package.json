@@ -11,8 +11,10 @@
   "license": "GNU",
   "dependencies": {
     "electron": "^4.0.8",
+    "knex": "^0.16.3",
     "qs": "^6.7.0",
-    "smalltalk": "^3.2.2"
+    "smalltalk": "^3.2.2",
+    "sqlite3": "^4.0.6"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

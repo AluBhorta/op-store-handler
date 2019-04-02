@@ -11,24 +11,38 @@ import ErrorComponent from "./components/ErrorComponent";
 import qs from "qs";
 import AddNewOrderPage from "./components/order/AddNewOrderPage";
 import OrderHistoryPage from "./components/order/OrderHistoryPage";
-
-// const { ipcRenderer } = window.require("electron");
+import Login from "./components/Login";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isAutenticated: false,
+      username: ""
+    };
   }
+
+  validateUser = (isValidUser, username) => {
+    return isValidUser
+      ? this.setState({ isAutenticated: true, username })
+      : null;
+  };
+
+  handleLogout = e => {
+    this.setState({ isAutenticated: false, username: "" });
+  };
 
   render() {
     return (
       <div className="App">
         <h2>App</h2>
-
         <Router>
           <div>
             {/* nav-links */}
-            <Navigation />
+            <Navigation
+              username={this.state.username}
+              handleLogout={this.handleLogout}
+            />
 
             {/* routes */}
             <Switch>
@@ -54,7 +68,6 @@ class App extends Component {
                   return <ItemPage item={item} />;
                 }}
               />
-
               <Route path="/add-new-order" component={AddNewOrderPage} />
               <Route
                 path="/orderHistoryPage"
