@@ -6,12 +6,14 @@ const PORT = "3000";
 let demoWindow, mainWindow, addItemWindow, updateItemWindow, addOrderWindow;
 
 // DB client
-// var knex = require("knex")({
+// let knex = require("knex")({
 //   client: "sqlite3",
 //   connection: {
 //     filename: "./db.sqlite"
 //   }
 // });
+
+// let pg = require("knex")({ client: "sqlite3" });
 
 //
 // WINDOW CREATION FUNCTIONS  //

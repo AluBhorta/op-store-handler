@@ -46,7 +46,6 @@ export default class UpdateItemPage extends Component {
     return (
       <div>
         <h2>Update Item Form</h2>
-        <p>Item name cannot be changed.</p>
         <form>
           <div className="form-item-info">
             <label>Name: </label>
@@ -57,6 +56,7 @@ export default class UpdateItemPage extends Component {
               value={this.state.name}
               readOnly
             />
+            <span> Item name cannot be changed.</span>
             <br />
 
             <label>Quantity Unit: </label>

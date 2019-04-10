@@ -2,19 +2,13 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 const noNavPaths = require("../noNavPaths");
 
-export default withRouter(function Navigation({
-  location,
-  username,
-  handleLogout
-}) {
+export default withRouter(function Navigation({ location }) {
   const pathname = location.pathname;
   const showNav = !noNavPaths.includes(pathname);
   return (
     <div>
       {showNav ? (
         <div className="navigation">
-          <span>Hello, {username} </span>
-          {/* <button onClick={handleLogout}>Logout</button> */}
           <ul>
             <li>
               <Link to="/">Dashboard</Link>
