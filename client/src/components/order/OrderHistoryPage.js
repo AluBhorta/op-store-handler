@@ -27,7 +27,7 @@ export default function OrderHistoryPage({ order }) {
         <div className="order-history-details">
           <p>Order Id: {orderId}</p>
           <p>Date: {date}</p>
-          <p>name: {totalBill}</p>
+          <p>Total Bill: {totalBill}</p>
           <div>
             <h3>Items</h3>
             <ul>{orderItems}</ul>

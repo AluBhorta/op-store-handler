@@ -1,19 +1,17 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
-const Item = require("./models/Item");
-const PORT = "3000";
+const PORT = process.env.PORT || "3000";
 
 // BROWSER-WINDOWS //
-let demoWindow, mainWindow, addItemWindow, updateItemWindow, addOrderWindow;
+let mainWindow, addItemWindow, updateItemWindow, addOrderWindow;
 
 // DB client
-// let knex = require("knex")({
-//   client: "sqlite3",
-//   connection: {
-//     filename: "./db.sqlite"
-//   }
-// });
-
-// let pg = require("knex")({ client: "sqlite3" });
+let knex = require("knex")({
+  client: "sqlite3",
+  connection: {
+    filename: "./db/db.sqlite"
+  },
+  useNullAsDefault: true
+});
 
 //
 // WINDOW CREATION FUNCTIONS  //
@@ -29,7 +27,7 @@ function createMainWindow() {
   });
 
   mainWindow.loadURL(`http://localhost:${PORT}/`);
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   mainWindow.once("ready-to-show", () => mainWindow.show());
   mainWindow.on("closed", () => (mainWindow = null));
 }
@@ -89,16 +87,9 @@ function createAddOrderWindow() {
     show: false
   });
   addOrderWindow.loadURL(`http://localhost:${PORT}/add-new-order`);
-  addOrderWindow.webContents.openDevTools();
+  // addOrderWindow.webContents.openDevTools();
   addOrderWindow.once("ready-to-show", () => addOrderWindow.show());
   addOrderWindow.on("closed", () => (addOrderWindow = null));
-}
-
-function createDemoWindow() {
-  demoWindow = new BrowserWindow();
-  demoWindow.webContents.openDevTools();
-  demoWindow.loadFile(__dirname + "/index.html");
-  demoWindow.on("closed", () => (demoWindow = null));
 }
 
 //
