@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 const { ipcRenderer } = window.require("electron");
+const smalltalk = require("smalltalk");
 
 export default class UpdateItemPage extends Component {
   constructor(props) {
@@ -30,16 +31,27 @@ export default class UpdateItemPage extends Component {
       buyingPrice === "" ||
       sellingPrice === ""
     ) {
-      return alert("Please enter all item information correctly.");
+      return smalltalk
+        .alert(
+          "Invalid Fields!",
+          "Please enter all required item information before sumbission."
+        )
+        .catch(err => console.log(err));
     }
-    ipcRenderer.send("submitUpdateItem", this.state);
+    smalltalk
+      .confirm("Update Item", "Are you sure you want to update this item?")
+      .then(() => ipcRenderer.send("submitUpdateItem", this.state))
+      .catch(() => console.log("nope"));
   };
 
   handleCancel = e => {
     e.preventDefault();
-    console.log("cancel action; may ask user again...");
-
-    ipcRenderer.send("closeUpdateItemWindow", "Add new Item Cancelled");
+    smalltalk
+      .confirm("Confirm Cancel", "Are you sure you discard changes?")
+      .then(() =>
+        ipcRenderer.send("closeUpdateItemWindow", "Add new Item Cancelled")
+      )
+      .catch(() => console.log("nope"));
   };
 
   render() {

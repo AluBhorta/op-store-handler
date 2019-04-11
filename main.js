@@ -120,9 +120,6 @@ ipcMain.on("addNewSupply", (e, msg) => {
 
 ipcMain.on("closeAddItemWindow", (e, msg) => {
   console.log(msg);
-  //  ###
-  //
-  // ask user again with a dialogBox
   addItemWindow.close();
   addItemWindow = null;
 });
@@ -137,8 +134,6 @@ ipcMain.on("redirectToUpdateItemWindow", (e, item) => {
 });
 
 ipcMain.on("submitAddItem", (e, item) => {
-  console.log("submitting add item:", item);
-
   const {
     name,
     quantityUnit,
@@ -149,40 +144,87 @@ ipcMain.on("submitAddItem", (e, item) => {
     itemStatus
   } = item;
 
-  // ###
-  //
-  //  save item to DB accordingly
-  // + let user know results
-  if (itemStatus === "old") {
-    // if exists addToStockQuantity() in DB
-    // else alert user of false data
-  } else {
-    // itemStatus === "new"
-    // check if item with item.name exists
-    // exists ? alert user with error : make new item in DB
-  }
+  knex
+    .select()
+    .from("items")
+    .where({ name })
+    .then(data => {
+      const itemExistsInStock = data.length > 0;
+      if (!itemExistsInStock && itemStatus === "new") {
+        // if no such item exists in stock
+        knex("items")
+          .insert({
+            name,
+            quantityUnit,
+            stockQuantity: addQuantity,
+            buyingPrice,
+            sellingPrice,
+            details
+          })
+          .then(res => console.log(`added new item: ${name}`))
+          .then(() => {
+            mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
+            addItemWindow.close();
+            addItemWindow = null;
+          })
+          .catch(err => console.log(err));
+      } else if (!itemExistsInStock && itemStatus === "old") {
+        e.sender.send(
+          "error-submitAddItem",
+          "Wrong Item Status. Select New button."
+        );
+      } else if (itemExistsInStock && itemStatus === "new") {
+        e.sender.send(
+          "error-submitAddItem",
+          "Item already exists in Stock. Select Old button."
+        );
+      } else if (itemExistsInStock && itemStatus === "old") {
+        knex
+          .select()
+          .from("items")
+          .where({ name })
+          .then(data => {
+            const oldQuantity = data[0].stockQuantity;
 
-  mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
-  addItemWindow.close();
-  addItemWindow = null;
+            knex("items")
+              .where({ name })
+              .update({
+                stockQuantity: parseInt(oldQuantity) + parseInt(addQuantity)
+              })
+              .then(() => {
+                mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
+                addItemWindow.close();
+                addItemWindow = null;
+              });
+          });
+      }
+    })
+    .catch(err => console.log(err));
 });
 
 ipcMain.on("searchForOldItem", (e, name) => {
   console.log("searching for pre-existing item: ", name);
 
-  // ###
-  //
-  // query DB to check if name exists
-  // return exists ? oldItem : null
-  const searchedItem = {
-    quantityUnit: "kg",
-    stockQuantity: "200",
-    buyingPrice: "70",
-    sellingPrice: "80",
-    details: "A very important item."
-  };
+  knex
+    .select()
+    .from("items")
+    .where({ name })
+    .then(data => {
+      if (data.length === 0) {
+        return e.sender.send("reply-searchForOldItem", null);
+      } else {
+        console.log(data[0]);
+        const searchedItem = ({
+          quantityUnit,
+          buyingPrice,
+          sellingPrice,
+          details,
+          stockQuantity
+        } = data[0]);
 
-  e.sender.send("reply-searchForOldItem", searchedItem);
+        e.sender.send("reply-searchForOldItem", searchedItem);
+      }
+    });
 });
 
 // IPC - updating item

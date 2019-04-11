@@ -74,20 +74,51 @@ function initDb() {
     });
 }
 
-function queryDb() {
+function searchDb(dbName = "items") {
+  console.log(dbName.toUpperCase() + ": ");
+  knex
+    .select()
+    .from(dbName)
+    .then(data => console.log(data));
+}
+
+function updateItemQuantity(name = "test", addQuantity = 21) {
+  knex
+    .select("sellingPrice")
+    .from("items")
+    .where({ name })
+    .then(data => {
+      return Promise.resolve(data[0].sellingPrice);
+    })
+    .then(oldQuantity => {
+      knex("items")
+        .where({ name })
+        .update({ sellingPrice: 4201 });
+    });
+}
+
+function searchItem(name = "test") {
   knex
     .select()
     .from("items")
-    .then(data => console.log("items: ", data));
-  knex
-    .select()
-    .from("orders")
-    .then(data => console.log("orders: ", data));
-  knex
-    .select()
-    .from("order_items")
-    .then(data => console.log("order_items: ", data));
+    .where({ name })
+    .then(data => {
+      console.log(data);
+      return Promise.resolve(data);
+    })
+    .catch(err => console.log(err));
 }
 
-// initDb();
-queryDb();
+function updateResetStock(name = "test") {
+  knex("items")
+    .where({ name })
+    .update({ stockQuantity: 0 });
+}
+
+function deleteItem() {}
+
+//
+// MAIN
+//
+
+searchDb();

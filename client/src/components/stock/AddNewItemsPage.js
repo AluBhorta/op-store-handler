@@ -79,39 +79,60 @@ export default class AddNewItemsPage extends Component {
         )
         .catch(err => console.log(err));
     }
-    ipcRenderer.send("submitAddItem", {
-      name,
-      quantityUnit,
-      addQuantity,
-      buyingPrice,
-      sellingPrice,
-      details,
-      itemStatus
+
+    smalltalk
+      .confirm("Confirm New Item", "Are you sure you save this Item?")
+      .then(() =>
+        ipcRenderer.send("submitAddItem", {
+          name,
+          quantityUnit,
+          addQuantity,
+          buyingPrice,
+          sellingPrice,
+          details,
+          itemStatus
+        })
+      )
+      .catch(() => console.log("nope"));
+
+    ipcRenderer.on("error-submitAddItem", (e, msg) => {
+      smalltalk.alert("Submission Error!", msg).catch(err => console.log(err));
     });
   };
 
   handleCancel = e => {
     e.preventDefault();
-    console.log("cancel action; may ask user again...");
-
-    ipcRenderer.send("closeAddItemWindow", "Add new Item Cancelled");
+    smalltalk
+      .confirm("Confirm Cancel", "Are you sure you discard changes?")
+      .then(() =>
+        ipcRenderer.send("closeAddItemWindow", "Add new Item Cancelled")
+      )
+      .catch(() => console.log("nope"));
   };
 
   handleClear = e => {
     e.preventDefault();
 
-    this.setState({
-      name: "",
-      quantityUnit: "",
-      addQuantity: "",
-      buyingPrice: "",
-      sellingPrice: "",
-      details: "",
-      itemStatus: "new",
-      showCurrentStockQuantity: false,
-      stockQuantity: "",
-      inputIsEditable: true
-    });
+    smalltalk
+      .confirm(
+        "Confirm Clear",
+        "Are you sure you want to clear entered information?"
+      )
+      .then(() =>
+        this.setState({
+          name: "",
+          quantityUnit: "",
+          addQuantity: "",
+          buyingPrice: "",
+          sellingPrice: "",
+          details: "",
+          itemStatus: "new",
+          showCurrentStockQuantity: false,
+          stockQuantity: "",
+          inputIsEditable: true
+        })
+      )
+      .catch(() => console.log("nope"));
   };
 
   handleSearchItem = e => {
@@ -124,7 +145,7 @@ export default class AddNewItemsPage extends Component {
       ipcRenderer.on("reply-searchForOldItem", (e, res) => {
         if (res === null) {
           smalltalk
-            .alert("No match found", `No item named ${name} found.`)
+            .alert("Incorrect Item Name", `No such item found.`)
             .catch(err => console.log(err));
         } else {
           const {
@@ -147,9 +168,9 @@ export default class AddNewItemsPage extends Component {
         }
       });
     } else {
-      smalltalk
-        .alert("Invalid name", `Please enter a valid name!`)
-        .catch(err => console.log(err));
+      // smalltalk
+      //   .alert("Invalid name", `Please enter a valid name!`)
+      //   .catch(err => console.log(err));
     }
   };
 
