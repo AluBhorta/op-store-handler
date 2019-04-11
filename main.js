@@ -287,13 +287,18 @@ ipcMain.on("closeUpdateItemWindow", (e, args) => {
 ipcMain.on("deleteItemFromStock", (e, item) => {
   console.log("bout to delete this bad boy", item);
 
+  knex("items")
+    .where({ name: item.name })
+    .del()
+    .then(mainWindow.loadURL(`http://localhost:${PORT}/stocks`));
+
   // ###
   //
   // match item.fields with DB items'
   // delete item from DB
   // + let user know results
 
-  mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
+  // mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
 });
 
 // IPC - add Orders
