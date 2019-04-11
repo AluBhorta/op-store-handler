@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import StockTable from "./stock/StockTable";
 const { ipcRenderer } = window.require("electron");
-const data = require("./stock/fakeStockData");
 
 export default class Stocks extends Component {
   constructor(props) {
@@ -13,20 +12,16 @@ export default class Stocks extends Component {
   }
 
   componentDidMount = () => {
-    // ###
-    //
-    // update state.stockItems via API call to DB
+    ipcRenderer.send("getStockItems", "retrieve stock items from db");
 
-    this.setState({ stockItems: data }); // fakeData
+    ipcRenderer.on("reply-getStockItems", (e, data) => {
+      this.setState({ stockItems: data });
+    });
   };
 
   addNewSupply = () => {
     console.log("Open form to add new supply");
     ipcRenderer.send("addNewSupply", "open add item window");
-
-    // ###
-    //
-    // reload StockTable
   };
 
   handleTableRowClick = item => {

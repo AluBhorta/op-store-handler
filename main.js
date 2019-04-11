@@ -229,6 +229,17 @@ ipcMain.on("searchForOldItem", (e, name) => {
 
 // IPC - updating item
 
+ipcMain.on("getStockItems", (e, msg) => {
+  console.log(msg);
+
+  knex
+    .select()
+    .from("items")
+    .then(items => {
+      e.sender.send("reply-getStockItems", items);
+    });
+});
+
 ipcMain.on("showUpdateItemWindow", (e, item) => {
   console.log("show update window for: ", item);
   createUpdateItemWindow(item);
