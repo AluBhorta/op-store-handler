@@ -58,10 +58,16 @@ export default class AddNewOrderPage extends Component {
     // ###
     //
     // query DB to find if any item.name matches with "value"
-    // return results array of [name, price, stockQuantity]
-    value === ""
-      ? this.setState({ serachedItems: [] })
-      : this.setState({ serachedItems: items });
+    // return results array of {name, sellingPrice, stockQuantity}
+    if (value === "") {
+      this.setState({ serachedItems: [] });
+    } else {
+      ipcRenderer.send("searchForOrderItems", value);
+
+      ipcRenderer.on("reply-searchForOrderItems", (e, serachedItems) => {
+        this.setState({ serachedItems });
+      });
+    }
   };
 
   handleSearchResultClick = item => {
@@ -115,7 +121,7 @@ export default class AddNewOrderPage extends Component {
   render() {
     const listItems = this.state.serachedItems.map((item, index) => (
       <li key={index} onClick={() => this.handleSearchResultClick(item)}>
-        {item.name} | Price: {item.price}
+        {item.name} | Price: {item.sellingPrice}
       </li>
     ));
 

@@ -317,6 +317,16 @@ ipcMain.on("closeNewOrderWindow", (e, msg) => {
   addOrderWindow = null;
 });
 
+ipcMain.on("searchForOrderItems", (e, itemName) => {
+  knex
+    .select("name", "sellingPrice", "stockQuantity")
+    .from("items")
+    .where("name", "like", `%${itemName}%`) // match with indexOf?
+    .then(results => {
+      e.sender.send("reply-searchForOrderItems", results);
+    });
+});
+
 ipcMain.on("submitNewOrder", (e, orderedItems) => {
   console.log("create new Order for items: ", orderedItems);
 

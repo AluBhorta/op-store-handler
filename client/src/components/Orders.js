@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import OrderHistoryTable from "./order/OrderHistoryTable";
-import { fakeOrders } from "./order/fakeOrderData";
 const { ipcRenderer } = window.require("electron");
 
 export default class Orders extends Component {
@@ -13,18 +12,11 @@ export default class Orders extends Component {
   }
 
   componentDidMount = () => {
-    // ###
-    //
-    // update state.orders via API call to DB
-    // this.setState({ orders: [] }); // fakeData
-
     ipcRenderer.send("getOrders", "retrieve orders from db");
 
     ipcRenderer.on("reply-getOrders", (e, data) => {
       this.setState({ orders: data });
     });
-
-    // this.setState({ orders: fakeOrders });
   };
 
   addNewOrder = () => {
