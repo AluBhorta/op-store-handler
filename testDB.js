@@ -121,4 +121,22 @@ function deleteItem() {}
 // MAIN
 //
 
-searchDb();
+const name = "item3";
+const quantityUnit = "tasty";
+const stockQuantity = "tasty";
+const buyingPrice = "tasty";
+const sellingPrice = "tasty";
+const details = "tasty";
+
+knex("items")
+  .where({ name })
+  .update({
+    quantityUnit,
+    stockQuantity,
+    buyingPrice,
+    sellingPrice,
+    details
+  })
+  .timeout(300)
+  .then(searchDb())
+  .catch(err => console.log(err));

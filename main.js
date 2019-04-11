@@ -256,16 +256,23 @@ ipcMain.on("submitUpdateItem", (e, item) => {
     sellingPrice,
     details
   } = item;
-  // ###
-  //
-  // save updated item record to DB
-  // + let user know results
 
-  const url = `http://localhost:${PORT}/itemPage?name=${name}&quantityUnit=${quantityUnit}&stockQuantity=${stockQuantity}&buyingPrice=${buyingPrice}&sellingPrice=${sellingPrice}&details=${details}`;
-  mainWindow.loadURL(url);
+  knex("items")
+    .where({ name })
+    .update({
+      quantityUnit,
+      stockQuantity,
+      buyingPrice,
+      sellingPrice,
+      details
+    })
+    .then(() => {
+      const url = `http://localhost:${PORT}/itemPage?name=${name}&quantityUnit=${quantityUnit}&stockQuantity=${stockQuantity}&buyingPrice=${buyingPrice}&sellingPrice=${sellingPrice}&details=${details}`;
 
-  updateItemWindow.close();
-  updateItemWindow = null;
+      mainWindow.loadURL(url);
+      updateItemWindow.close();
+      updateItemWindow = null;
+    });
 });
 
 ipcMain.on("closeUpdateItemWindow", (e, args) => {
