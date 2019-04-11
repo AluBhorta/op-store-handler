@@ -9,9 +9,9 @@ export default function OrderHistoryTable({ orders, handleTableRowClick }) {
       onClick={() => handleTableRowClick(order)}
     >
       <td className="table-data">{order.orderId}</td>
-      <td className="table-data">{order.date}</td>
+      <td className="table-data">{order.orderDate}</td>
       <td className="table-data">{order.totalBill}</td>
-      <td className="table-data">{order.items.length}</td>
+      <td className="table-data">{order.numberOfItems}</td>
     </tr>
   ));
   return (

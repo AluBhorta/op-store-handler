@@ -26,7 +26,7 @@ function createMainWindow() {
     show: false
   });
 
-  mainWindow.loadURL(`http://localhost:${PORT}/`);
+  mainWindow.loadURL(`http://localhost:${PORT}/orders`);
   // mainWindow.webContents.openDevTools();
   mainWindow.once("ready-to-show", () => mainWindow.show());
   mainWindow.on("closed", () => (mainWindow = null));
@@ -291,17 +291,20 @@ ipcMain.on("deleteItemFromStock", (e, item) => {
     .where({ name: item.name })
     .del()
     .then(mainWindow.loadURL(`http://localhost:${PORT}/stocks`));
-
-  // ###
-  //
-  // match item.fields with DB items'
-  // delete item from DB
-  // + let user know results
-
-  // mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
 });
 
 // IPC - add Orders
+
+ipcMain.on("getOrders", (e, msg) => {
+  console.log(msg);
+
+  knex
+    .select()
+    .from("orders")
+    .then(orders => {
+      e.sender.send("reply-getOrders", orders);
+    });
+});
 
 ipcMain.on("addNewOrder", (e, msg) => {
   console.log(msg);

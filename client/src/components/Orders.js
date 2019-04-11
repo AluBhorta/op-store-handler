@@ -17,7 +17,14 @@ export default class Orders extends Component {
     //
     // update state.orders via API call to DB
     // this.setState({ orders: [] }); // fakeData
-    this.setState({ orders: fakeOrders });
+
+    ipcRenderer.send("getOrders", "retrieve orders from db");
+
+    ipcRenderer.on("reply-getOrders", (e, data) => {
+      this.setState({ orders: data });
+    });
+
+    // this.setState({ orders: fakeOrders });
   };
 
   addNewOrder = () => {
