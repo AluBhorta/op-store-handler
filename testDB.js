@@ -144,6 +144,12 @@ function initOrderItemsTable() {
     .then(searchDb("order_items"));
 }
 
+function deleteFromTable() {
+  knex
+    .raw("delete from `orders` where `orderId` between 1 and 7")
+    .then(val => console.log(val));
+}
+
 function insertToTable() {
   knex("order_items")
     .insert({
@@ -162,7 +168,12 @@ function insertToTable() {
 
 // dropOrderItemsTable();
 // initOrderItemsTable();
-searchDb("order_items");
+// searchDb("order_items");
+
+searchDb("orders");
+// knex("orders")
+//   .where("orderId", "3")
+//   .del();
 
 // receiving: name, orderQuantity, stockQuantity, quantityUnit, sellingPrice
 

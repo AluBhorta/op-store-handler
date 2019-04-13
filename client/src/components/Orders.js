@@ -25,12 +25,16 @@ export default class Orders extends Component {
   };
 
   handleTableRowClick = order => {
-    const { orderId, date, totalBill, items } = order;
-    let stringyItems = JSON.stringify(items);
+    const { orderId, orderDate, totalBill, numberOfItems } = order;
 
-    const url = `/orderHistoryPage?orderId=${orderId}&date=${date}&totalBill=${totalBill}&items=${stringyItems}`;
+    ipcRenderer.send("getOrderItemsOfOrder", orderId);
 
-    this.state.history.push(url);
+    ipcRenderer.on("reply-getOrderItemsOfOrder", (e, orderItems) => {
+      let stringyItems = JSON.stringify(orderItems);
+
+      const url = `/orderHistoryPage?orderId=${orderId}&date=${orderDate}&totalBill=${totalBill}&numberOfItems=${numberOfItems}&items=${stringyItems}`;
+      this.state.history.push(url);
+    });
   };
 
   render() {

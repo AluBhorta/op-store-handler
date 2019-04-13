@@ -334,12 +334,6 @@ ipcMain.on("submitNewOrder", (e, orderedItems) => {
     return total + item.orderQuantity * item.sellingPrice;
   }, 0);
 
-  // ###
-  //
-  // init new order: orderID, Date(), calc totalBill, number of items,
-  // save order to DB
-  // ?inform user
-
   knex("orders")
     .insert({
       totalBill,
@@ -369,6 +363,16 @@ ipcMain.on("submitNewOrder", (e, orderedItems) => {
       mainWindow.loadURL(`http://localhost:${PORT}/orders`);
       addOrderWindow.close();
       addOrderWindow = null;
+    })
+    .catch(err => console.log(err));
+});
+
+ipcMain.on("getOrderItemsOfOrder", (e, orderId) => {
+  knex("order_items")
+    .select()
+    .where("orderId", orderId)
+    .then(orderedItems => {
+      e.sender.send("reply-getOrderItemsOfOrder", orderedItems);
     })
     .catch(err => console.log(err));
 });
