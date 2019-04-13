@@ -15,7 +15,7 @@ module.exports = {
   fakeOrders: [
     {
       orderId: "10",
-      date: "Sun Mar 21 2019 21:12:56 GMT+0600 (Bangladesh Standard Time)",
+      orderDate: "Sun Mar 21 2019 21:12:56 GMT+0600 (Bangladesh Standard Time)",
       totalBill: "XXX",
       items: [
         {
@@ -41,7 +41,7 @@ module.exports = {
     },
     {
       orderId: "11",
-      date: "Sun Mar 31 2019 21:35:56 GMT+0600 (Bangladesh Standard Time)",
+      orderDate: "Sun Mar 31 2019 21:35:56 GMT+0600 (Bangladesh Standard Time)",
       totalBill: "XXX",
       items: [
         {
@@ -61,7 +61,7 @@ module.exports = {
     },
     {
       orderId: "13",
-      date: "Sun Mar 12 2019 2:35:56 GMT+0600 (Bangladesh Standard Time)",
+      orderDate: "Sun Mar 12 2019 2:35:56 GMT+0600 (Bangladesh Standard Time)",
       totalBill: "XXX",
       items: [
         {
@@ -80,7 +80,7 @@ module.exports = {
     },
     {
       orderId: "33",
-      date: "Sun Mar 31 2019 1:03:56 GMT+0600 (Bangladesh Standard Time)",
+      orderDate: "Sun Mar 31 2019 1:03:56 GMT+0600 (Bangladesh Standard Time)",
       totalBill: "XXX",
       items: [
         {
@@ -111,7 +111,7 @@ module.exports = {
     },
     {
       orderId: "39",
-      date: "Sun Mar 20 2019 11:35:56 GMT+0600 (Bangladesh Standard Time)",
+      orderDate: "Sun Mar 20 2019 11:35:56 GMT+0600 (Bangladesh Standard Time)",
       totalBill: "XXX",
       items: [
         {

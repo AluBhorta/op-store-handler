@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 const smalltalk = require("smalltalk");
 const { ipcRenderer } = window.require("electron");
-const { items } = require("./fakeOrderData");
 
 export default class AddNewOrderPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchItemName: "",
-      serachedItems: [],
+      searchedItems: [],
       cartItems: []
     };
   }
@@ -19,7 +18,7 @@ export default class AddNewOrderPage extends Component {
       .then(() =>
         this.setState({
           searchItemName: "",
-          serachedItems: [],
+          searchedItems: [],
           cartItems: []
         })
       )
@@ -55,24 +54,23 @@ export default class AddNewOrderPage extends Component {
     const { name, value } = e.target;
     this.setState({ [name]: value });
 
-    // ###
-    //
-    // query DB to find if any item.name matches with "value"
-    // return results array of {name, sellingPrice, stockQuantity}
     if (value === "") {
-      this.setState({ serachedItems: [] });
+      this.setState({ searchedItems: [] });
     } else {
       ipcRenderer.send("searchForOrderItems", value);
 
-      ipcRenderer.on("reply-searchForOrderItems", (e, serachedItems) => {
-        this.setState({ serachedItems });
+      ipcRenderer.on("reply-searchForOrderItems", (e, searchedItems) => {
+        this.setState({ searchedItems });
       });
     }
   };
 
   handleSearchResultClick = item => {
     this.setState(ps => {
-      if (ps.cartItems.includes(item)) {
+      const matchedCartItems = ps.cartItems.filter(
+        cartItem => cartItem.name === item.name
+      );
+      if (matchedCartItems.length !== 0) {
         smalltalk
           .alert("You stupid?", "Item already in Cart.")
           .catch(err => console.log(err));
@@ -86,7 +84,7 @@ export default class AddNewOrderPage extends Component {
   };
 
   handleClearSearchResults = e => {
-    this.setState({ searchItemName: "", serachedItems: [] });
+    this.setState({ searchItemName: "", searchedItems: [] });
   };
 
   handleCartItemRemove = index => {
@@ -119,7 +117,7 @@ export default class AddNewOrderPage extends Component {
   };
 
   render() {
-    const listItems = this.state.serachedItems.map((item, index) => (
+    const listItems = this.state.searchedItems.map((item, index) => (
       <li key={index} onClick={() => this.handleSearchResultClick(item)}>
         {item.name} | Price: {item.sellingPrice}
       </li>
@@ -128,13 +126,14 @@ export default class AddNewOrderPage extends Component {
     const cartItems = this.state.cartItems.map((cartItem, index) => (
       <div key={index} className="cart-item">
         <span>
-          {cartItem.name} | Unit Price: {cartItem.price}
+          {cartItem.name} | Unit Price: {cartItem.sellingPrice} | Stock
+          Quantity: {cartItem.stockQuantity}
         </span>
         <button onClick={() => this.handleCartItemRemove(index)}>Remove</button>
         <div>
           <span>
             Quantity: {cartItem.orderQuantity} | Total Price:{" "}
-            {cartItem.orderQuantity * cartItem.price}
+            {cartItem.orderQuantity * cartItem.sellingPrice}
           </span>
           <button onClick={() => this.handlePlusQuantity(index)}>
             + Quantity
@@ -151,7 +150,7 @@ export default class AddNewOrderPage extends Component {
       this.state.cartItems.length === 0
         ? 0
         : this.state.cartItems.reduce((total, item) => {
-            return total + item.orderQuantity * item.price;
+            return total + item.orderQuantity * item.sellingPrice;
           }, 0);
 
     return (
@@ -191,7 +190,7 @@ export default class AddNewOrderPage extends Component {
             <button onClick={this.handleClearSearchResults}>
               Clear Search Results
             </button>
-            {this.state.serachedItems.length === 0 ? (
+            {this.state.searchedItems.length === 0 ? (
               ""
             ) : (
               <p>Click on an Item to add to Cart.</p>

@@ -319,9 +319,9 @@ ipcMain.on("closeNewOrderWindow", (e, msg) => {
 
 ipcMain.on("searchForOrderItems", (e, itemName) => {
   knex
-    .select("name", "sellingPrice", "stockQuantity")
+    .select("name", "sellingPrice", "stockQuantity", "quantityUnit")
     .from("items")
-    .where("name", "like", `%${itemName}%`) // match with indexOf?
+    .where("name", "like", `%${itemName}%`)
     .then(results => {
       e.sender.send("reply-searchForOrderItems", results);
     });
@@ -330,16 +330,47 @@ ipcMain.on("searchForOrderItems", (e, itemName) => {
 ipcMain.on("submitNewOrder", (e, orderedItems) => {
   console.log("create new Order for items: ", orderedItems);
 
+  const totalBill = orderedItems.reduce((total, item) => {
+    return total + item.orderQuantity * item.sellingPrice;
+  }, 0);
+
   // ###
   //
   // init new order: orderID, Date(), calc totalBill, number of items,
   // save order to DB
   // ?inform user
 
-  mainWindow.loadURL(`http://localhost:${PORT}/orders`);
+  knex("orders")
+    .insert({
+      totalBill,
+      numberOfItems: orderedItems.length
+    })
+    .then(id => {
+      const currentOrderId = id[0];
 
-  addOrderWindow.close();
-  addOrderWindow = null;
+      const dbItems = orderedItems.map(item => {
+        return {
+          name: item.name,
+          orderId: currentOrderId,
+          orderQuantity: item.orderQuantity,
+          quantityUnit: item.quantityUnit,
+          sellingPrice: item.sellingPrice
+        };
+      });
+
+      knex("order_items")
+        .insert(dbItems)
+        .then(
+          console.log(`Successfully recorded order number ${currentOrderId}.`)
+        )
+        .catch(err => console.log(err));
+    })
+    .then(() => {
+      mainWindow.loadURL(`http://localhost:${PORT}/orders`);
+      addOrderWindow.close();
+      addOrderWindow = null;
+    })
+    .catch(err => console.log(err));
 });
 
 ipcMain.on("deleteOrderFromStock", (e, order) => {

@@ -82,6 +82,10 @@ function searchDb(dbName = "items") {
     .then(data => console.log(data));
 }
 
+function dropOrderItemsTable() {
+  knex.schema.dropTable("order_items").then(res => console.log(res));
+}
+
 function updateItemQuantity(name = "test", addQuantity = 21) {
   knex
     .select("sellingPrice")
@@ -115,10 +119,51 @@ function updateResetStock(name = "test") {
     .update({ stockQuantity: 0 });
 }
 
-function deleteItem() {}
+function initOrderItemsTable() {
+  knex.schema
+    .createTable("order_items", tb => {
+      tb.string("name") // PK-FK
+        .primary()
+        .notNullable();
+      tb.integer("orderId") // PK-FK
+        .primary()
+        .notNullable();
+      tb.integer("orderQuantity").notNullable(); // insert
+      tb.string("quantityUnit").notNullable(); // insert
+      tb.integer("sellingPrice").notNullable(); // insert
+    })
+    .then((res, rej) => {
+      knex("order_items").insert({
+        name: "test",
+        orderId: 1,
+        orderQuantity: 0,
+        quantityUnit: "test",
+        sellingPrice: 0
+      });
+    })
+    .then(searchDb("order_items"));
+}
+
+function insertToTable() {
+  knex("order_items")
+    .insert({
+      name: "test",
+      orderId: 2,
+      orderQuantity: 0,
+      quantityUnit: "test",
+      sellingPrice: 0
+    })
+    .then(searchDb("order_items"));
+}
 
 //
 // MAIN
 //
 
-searchDb("orders");
+// dropOrderItemsTable();
+// initOrderItemsTable();
+searchDb("order_items");
+
+// receiving: name, orderQuantity, stockQuantity, quantityUnit, sellingPrice
+
+// stored: [orderId], [name], [orderQuantity], [quantityUnit], <sellingPrice>
