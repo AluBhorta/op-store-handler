@@ -2,11 +2,11 @@ import React from "react";
 const { ipcRenderer } = window.require("electron");
 const smalltalk = require("smalltalk");
 
-const deleteItem = order => {
-  console.log("delete order?", order);
+const deleteItem = orderId => {
+  console.log("delete order?", orderId);
   smalltalk
     .confirm("Delete Order?", "Are you sure you want to delete this Order?")
-    .then(() => ipcRenderer.send("deleteOrderFromStock", order))
+    .then(() => ipcRenderer.send("deleteOrderFromStock", orderId))
     .catch(() => console.log("nope"));
 };
 
@@ -27,7 +27,7 @@ export default function OrderHistoryPage({ order }) {
       <div>
         <h1>Order History Page</h1>
         <div className="order-history-page-btns">
-          <button onClick={() => deleteItem(order)}>Delete Order</button>
+          <button onClick={() => deleteItem(orderId)}>Delete Order</button>
         </div>
 
         <div className="order-history-details">

@@ -164,9 +164,10 @@ function insertToTable() {
 
 // dropOrderItemsTable();
 // initOrderItemsTable();
-searchDb("order_items");
 
 searchDb("orders");
+searchDb("order_items");
+
 // knex("orders")
 //   .where("orderId", "3")
 //   .del();

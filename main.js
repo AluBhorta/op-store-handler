@@ -377,16 +377,14 @@ ipcMain.on("getOrderItemsOfOrder", (e, orderId) => {
     .catch(err => console.log(err));
 });
 
-ipcMain.on("deleteOrderFromStock", (e, order) => {
-  console.log("bout to delete this bad boy", order);
+ipcMain.on("deleteOrderFromStock", (e, orderId) => {
+  console.log("bout to delete this bad boy", orderId);
 
-  // ###
-  //
-  // match order.fields with DB orders'
-  // delete order from DB
-  // + let user know results
-
-  mainWindow.loadURL(`http://localhost:${PORT}/orders`);
+  knex.raw(`delete from 'orders' where orderId = ${orderId}`).then(val => {
+    knex
+      .raw(`delete from 'order_items' where orderId = ${orderId}`)
+      .then(mainWindow.loadURL(`http://localhost:${PORT}/orders`));
+  });
 });
 
 ipcMain.on("loginSubmit", (e, { username, password }) => {
