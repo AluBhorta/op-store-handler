@@ -12,8 +12,14 @@ const deleteItem = order => {
 
 export default function OrderHistoryPage({ order }) {
   const { orderId, date, totalBill, numberOfItems, items } = order;
+
   const orderItems = items.map((item, index) => (
-    <li key={index}>{item.name}</li>
+    <tr key={index} className="table-row" id={`tr${index}`}>
+      <td className="table-data">{item.name}</td>
+      <td className="table-data">{item.quantityUnit}</td>
+      <td className="table-data">{item.orderQuantity}</td>
+      <td className="table-data">{item.sellingPrice}</td>
+    </tr>
   ));
 
   return (
@@ -28,9 +34,21 @@ export default function OrderHistoryPage({ order }) {
           <p>Order Id: {orderId}</p>
           <p>Date: {date}</p>
           <p>Total Bill: {totalBill}</p>
+          <p>Number of Items: {numberOfItems}</p>
+
           <div>
-            <h3>Items: {numberOfItems} </h3>
-            <ul>{orderItems}</ul>
+            <h3>Items</h3>
+            <table>
+              <tbody>
+                <tr className="table-headers">
+                  <th className="table-header">Name</th>
+                  <th className="table-header">Quantity Unit</th>
+                  <th className="table-header">Order Quantity</th>
+                  <th className="table-header">Selling Price</th>
+                </tr>
+                {orderItems}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

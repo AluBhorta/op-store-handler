@@ -122,17 +122,13 @@ function updateResetStock(name = "test") {
 function initOrderItemsTable() {
   knex.schema
     .createTable("order_items", tb => {
-      tb.string("name") // PK-FK
-        .primary()
-        .notNullable();
-      tb.integer("orderId") // PK-FK
-        .primary()
-        .notNullable();
+      tb.string("name").notNullable();
+      tb.integer("orderId").notNullable();
       tb.integer("orderQuantity").notNullable(); // insert
       tb.string("quantityUnit").notNullable(); // insert
       tb.integer("sellingPrice").notNullable(); // insert
     })
-    .then((res, rej) => {
+    .then(() => {
       knex("order_items").insert({
         name: "test",
         orderId: 1,
@@ -154,7 +150,7 @@ function insertToTable() {
   knex("order_items")
     .insert({
       name: "test",
-      orderId: 2,
+      orderId: 1,
       orderQuantity: 0,
       quantityUnit: "test",
       sellingPrice: 0
@@ -168,7 +164,7 @@ function insertToTable() {
 
 // dropOrderItemsTable();
 // initOrderItemsTable();
-// searchDb("order_items");
+searchDb("order_items");
 
 searchDb("orders");
 // knex("orders")
