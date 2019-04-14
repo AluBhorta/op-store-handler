@@ -26,7 +26,7 @@ function createMainWindow() {
     show: false
   });
 
-  mainWindow.loadURL(`http://localhost:${PORT}/orders`);
+  mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
   // mainWindow.webContents.openDevTools();
   mainWindow.once("ready-to-show", () => mainWindow.show());
   mainWindow.on("closed", () => (mainWindow = null));

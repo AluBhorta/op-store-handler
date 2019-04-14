@@ -44,7 +44,7 @@ export default class Stocks extends Component {
         {/* <h3>Stocks</h3> */}
         <button
           onClick={this.addNewSupply}
-          className="btn waves-effect grey lighten-1"
+          className="btn waves-effect blue lighten-1"
         >
           Add Item Suppy
         </button>

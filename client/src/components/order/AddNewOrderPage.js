@@ -118,31 +118,45 @@ export default class AddNewOrderPage extends Component {
 
   render() {
     const listItems = this.state.searchedItems.map((item, index) => (
-      <li key={index} onClick={() => this.handleSearchResultClick(item)}>
+      <li
+        className="collection-item"
+        key={index}
+        onClick={() => this.handleSearchResultClick(item)}
+      >
         {item.name} | Price: {item.sellingPrice}
       </li>
     ));
 
     const cartItems = this.state.cartItems.map((cartItem, index) => (
-      <div key={index} className="cart-item">
+      <div key={index} className="cart-item collection-item">
         <span>
-          {cartItem.name} | Unit Price: {cartItem.sellingPrice} | Stock
-          Quantity: {cartItem.stockQuantity}
+          <strong>{cartItem.name}</strong> | Unit Price: {cartItem.sellingPrice}{" "}
+          | Stock Quantity: {cartItem.stockQuantity}
         </span>
-        <button onClick={() => this.handleCartItemRemove(index)}>Remove</button>
+        <button
+          className="btn red"
+          onClick={() => this.handleCartItemRemove(index)}
+        >
+          Remove
+        </button>
         <div>
           <span>
             Quantity: {cartItem.orderQuantity} | Total Price:{" "}
             {cartItem.orderQuantity * cartItem.sellingPrice}
           </span>
-          <button onClick={() => this.handlePlusQuantity(index)}>
+          <button
+            className="btn waves-effect blue lighten-1"
+            onClick={() => this.handlePlusQuantity(index)}
+          >
             + Quantity
           </button>
-          <button onClick={() => this.handleMinusQuantity(index)}>
+          <button
+            className="btn waves-effect blue lighten-1"
+            onClick={() => this.handleMinusQuantity(index)}
+          >
             - Quantity
           </button>
         </div>
-        <hr />
       </div>
     ));
 
@@ -155,9 +169,9 @@ export default class AddNewOrderPage extends Component {
 
     return (
       <div>
-        <h4>Add New Order</h4>
-        <div className="order-page-container">
-          <div className="order-item-search">
+        <div className="order-page-container container">
+          <div className="order-container-1">
+            <h4>Add New Order</h4>
             <form>
               <label>Item Name: </label>
               <input
@@ -170,52 +184,58 @@ export default class AddNewOrderPage extends Component {
               />
               <br />
             </form>
-          </div>
+            <div className="order-item-search">
+              <div className="order-search-results ">
+                <button
+                  onClick={this.handleClearSearchResults}
+                  className="btn waves-effect grey "
+                >
+                  Clear Search Results
+                </button>
+                <h6 className="">Search Results.</h6>
+                {this.state.searchedItems.length === 0 ? (
+                  ""
+                ) : (
+                  <p>Click on an Item to add to Cart.</p>
+                )}
 
-          <div className="order-btns">
-            <button
-              className="btn waves-effect green lighten-1"
-              name="submit"
-              onClick={this.handleSubmit}
-            >
-              Submit Order
-            </button>
-            <button
-              className="btn waves-effect red lighten-1"
-              name="cancel"
-              onClick={this.handleCancel}
-            >
-              Cancel Order
-            </button>
-            <button
-              className="btn waves-effect grey"
-              name="clear"
-              onClick={this.handleClear}
-            >
-              Clear Cart
-            </button>
-            <div>
-              <p>Total Bill: {totalBill}</p>
+                <ul className="order-search-list collection">{listItems}</ul>
+              </div>
             </div>
           </div>
-          <div className="order-search-results">
-            <h4>Search Results.</h4>
-            <button
-              onClick={this.handleClearSearchResults}
-              className="btn waves-effect grey"
-            >
-              Clear Search Results
-            </button>
-            {this.state.searchedItems.length === 0 ? (
-              ""
-            ) : (
-              <p>Click on an Item to add to Cart.</p>
-            )}
-            <ul className="order-search-list">{listItems}</ul>
-          </div>
-          <div className="order-cart-container">
-            <h6>Order Cart</h6>
-            <div className="order-cart">{cartItems}</div>
+
+          <div className="order-container-2">
+            <div className="order-btns">
+              <button
+                className="btn waves-effect green lighten-1"
+                name="submit"
+                onClick={this.handleSubmit}
+              >
+                Submit Order
+              </button>
+              <button
+                className="btn waves-effect red lighten-1"
+                name="cancel"
+                onClick={this.handleCancel}
+              >
+                Cancel Order
+              </button>
+              <button
+                className="btn waves-effect grey"
+                name="clear"
+                onClick={this.handleClear}
+              >
+                Clear Cart
+              </button>
+              <div className="card">
+                <h6 className="card-content center">Total Bill: {totalBill}</h6>
+              </div>
+            </div>
+
+            <div className="order-cart-container">
+              <h6 className="center-align">Order Cart</h6>
+              <ul className="order-cart collection">{cartItems}</ul>
+            </div>
           </div>
         </div>
       </div>

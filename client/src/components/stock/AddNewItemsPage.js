@@ -176,9 +176,9 @@ export default class AddNewItemsPage extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Add Items Form</h1>
+      <div className="container">
         <form>
+          <h1>Add Items Form</h1>
           <div className="form-radio-btns">
             <p>
               If the Item already exists in Stock, select <strong>Old</strong>.
