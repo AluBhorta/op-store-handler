@@ -26,16 +26,17 @@ function createMainWindow() {
     show: false
   });
 
-  mainWindow.loadURL(`http://localhost:${PORT}/stocks`);
+  mainWindow.loadURL(`http://localhost:${PORT}/`);
   // mainWindow.webContents.openDevTools();
   mainWindow.once("ready-to-show", () => mainWindow.show());
   mainWindow.on("closed", () => (mainWindow = null));
+  mainWindow.maximize();
 }
 
 function createAddItemWindow() {
   addItemWindow = new BrowserWindow({
-    width: 800,
-    height: 700,
+    width: 768,
+    height: 640,
     webPreferences: {
       nodeIntegration: true
     },
@@ -51,8 +52,8 @@ function createAddItemWindow() {
 
 function createUpdateItemWindow(item) {
   updateItemWindow = new BrowserWindow({
-    width: 750,
-    height: 550,
+    width: 768,
+    height: 520,
     webPreferences: {
       nodeIntegration: true
     },

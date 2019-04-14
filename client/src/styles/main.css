@@ -30,3 +30,15 @@ h1 {
   left: 21px;
   pointer-events: none;
 }
+
+.dashboard-wrapper {
+  display: grid;
+  grid-template-columns: 6fr 9fr;
+  grid-gap: 2rem;
+}
+
+.container {
+  width: 95%;
+  max-width: 98%;
+  min-width: 75%;
+}

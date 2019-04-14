@@ -3,7 +3,6 @@ import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
 import Dashoard from "./components/Dashoard";
 import Stocks from "./components/Stocks";
 import Orders from "./components/Orders";
-import Navigation from "./components/Navigation";
 import AddNewItemsPage from "./components/stock/AddNewItemsPage";
 import ItemPage from "./components/stock/ItemPage";
 import UpdateItemPage from "./components/stock/UpdateItemPage";
@@ -12,6 +11,7 @@ import qs from "qs";
 import AddNewOrderPage from "./components/order/AddNewOrderPage";
 import OrderHistoryPage from "./components/order/OrderHistoryPage";
 import Header from "./components/Header";
+// import Navigation from "./components/Navigation";
 // import Login from "./components/Login";
 
 class App extends Component {

@@ -4,7 +4,7 @@ A Desktop Store-Management-System built on ElectronJS and ReactJS.
 
 ## Dependencies/Stack
 
-Front-end: ReactJS, Sass, material?/w3?/bootstrap?
+Front-end: ReactJS, materialize CSS, chartJS
 
 Back-end: ElectronJS
 
