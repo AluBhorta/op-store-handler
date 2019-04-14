@@ -22,3 +22,11 @@ table tr:hover {
 h1 {
   font-size: 3rem;
 }
+
+[type="radio"]:not(:checked),
+[type="radio"]:checked {
+  opacity: 1;
+  position: relative;
+  left: 21px;
+  pointer-events: none;
+}

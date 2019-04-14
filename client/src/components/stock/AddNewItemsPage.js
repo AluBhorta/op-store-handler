@@ -178,33 +178,37 @@ export default class AddNewItemsPage extends Component {
     return (
       <div className="container">
         <form>
-          <h1>Add Items Form</h1>
+          <h5>Add Items Form</h5>
           <div className="form-radio-btns">
             <p>
               If the Item already exists in Stock, select <strong>Old</strong>.
               <br />
               If it is a new Item select <strong>New</strong>.
             </p>
-            <label>
-              <input
-                type="radio"
-                name="itemStatus"
-                value="new"
-                onChange={this.handleChange}
-                checked={this.state.itemStatus === "new"}
-              />{" "}
-              New
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="itemStatus"
-                value="old"
-                onChange={this.handleChange}
-                checked={this.state.itemStatus === "old"}
-              />{" "}
-              Old
-            </label>
+            <p>
+              <label>
+                <input
+                  type="radio"
+                  name="itemStatus"
+                  value="new"
+                  onChange={this.handleChange}
+                  checked={this.state.itemStatus === "new"}
+                />{" "}
+                <span>New</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input
+                  type="radio"
+                  name="itemStatus"
+                  value="old"
+                  onChange={this.handleChange}
+                  checked={this.state.itemStatus === "old"}
+                />{" "}
+                <span>Old</span>
+              </label>
+            </p>
           </div>
           {this.state.inputIsEditable ? (
             ""
@@ -213,7 +217,10 @@ export default class AddNewItemsPage extends Component {
               You can only <strong>Add Quantity</strong> to an old Item here. To
               update this item information, click below.
               <br />
-              <button onClick={this.redirectToUpdateWindow}>
+              <button
+                className="btn waves-effect blue lighten-1"
+                onClick={this.redirectToUpdateWindow}
+              >
                 Update Old Item
               </button>
             </p>
@@ -230,7 +237,12 @@ export default class AddNewItemsPage extends Component {
               onChange={this.state.inputIsEditable ? this.handleChange : null}
             />
             {this.state.itemStatus === "old" ? (
-              <button onClick={this.handleSearchItem}>Search for Item</button>
+              <button
+                className="btn waves-effect blue lighten-1"
+                onClick={this.handleSearchItem}
+              >
+                Search for Item
+              </button>
             ) : (
               ""
             )}
@@ -296,13 +308,25 @@ export default class AddNewItemsPage extends Component {
             <br />
           </div>
           <div className="form-btn">
-            <button name="submit" onClick={this.handleSubmit}>
+            <button
+              className="btn waves-effect green"
+              name="submit"
+              onClick={this.handleSubmit}
+            >
               Submit
             </button>
-            <button name="cancel" onClick={this.handleCancel}>
+            <button
+              className="btn waves-effect red"
+              name="cancel"
+              onClick={this.handleCancel}
+            >
               Cancel
             </button>
-            <button name="clear" onClick={this.handleClear}>
+            <button
+              className="btn waves-effect grey"
+              name="clear"
+              onClick={this.handleClear}
+            >
               Clear
             </button>
           </div>

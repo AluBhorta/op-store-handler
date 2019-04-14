@@ -34,8 +34,8 @@ function createMainWindow() {
 
 function createAddItemWindow() {
   addItemWindow = new BrowserWindow({
-    width: 750,
-    height: 550,
+    width: 800,
+    height: 700,
     webPreferences: {
       nodeIntegration: true
     },
