@@ -20,7 +20,6 @@ export default class Orders extends Component {
   };
 
   addNewOrder = () => {
-    console.log("Open form to add new order");
     ipcRenderer.send("addNewOrder", "open add order window");
   };
 
@@ -40,8 +39,13 @@ export default class Orders extends Component {
   render() {
     return (
       <div>
-        <h1>Orders</h1>
-        <button onClick={this.addNewOrder}>Add New Order</button>
+        {/* <h3>Orders</h3> */}
+        <button
+          onClick={this.addNewOrder}
+          className="btn waves-effect blue lighten-1"
+        >
+          Add New Order
+        </button>
         <OrderHistoryTable
           orders={this.state.orders}
           handleTableRowClick={this.handleTableRowClick}

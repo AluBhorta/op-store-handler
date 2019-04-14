@@ -13,28 +13,21 @@ export default function StockTable({ stockItems, handleTableRowClick }) {
       <td className="table-data">{item.stockQuantity}</td>
       <td className="table-data">{item.buyingPrice}</td>
       <td className="table-data">{item.sellingPrice}</td>
-      <td className="table-data">{item.details}</td>
     </tr>
   ));
 
   return (
     <div>
-      <h1>Stock Table</h1>
+      <h4 className="center">Stock Table</h4>
       <div>
-        <table>
+        <table className="centered red lighten-4">
           <tbody>
-            {/* 
-            ### 
-            
-            Fix error in console regarding th, tr, table,...
-          */}
             <tr className="table-headers">
-              <th className="table-header">Name</th>
-              <th className="table-header">Quantity Unit</th>
-              <th className="table-header">Stock Quantity</th>
-              <th className="table-header">Buying Price</th>
-              <th className="table-header">Selling Price</th>
-              <th className="table-header">Details</th>
+              <th className="table-header center-align">Name</th>
+              <th className="table-header center-align">Quantity Unit</th>
+              <th className="table-header center-align">Stock Quantity</th>
+              <th className="table-header center-align">Buying Price</th>
+              <th className="table-header center-align">Selling Price</th>
             </tr>
             {stockContents}
           </tbody>

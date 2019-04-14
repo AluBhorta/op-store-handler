@@ -155,7 +155,7 @@ export default class AddNewOrderPage extends Component {
 
     return (
       <div>
-        <h1>Add New Order</h1>
+        <h4>Add New Order</h4>
         <div className="order-page-container">
           <div className="order-item-search">
             <form>
@@ -171,14 +171,27 @@ export default class AddNewOrderPage extends Component {
               <br />
             </form>
           </div>
+
           <div className="order-btns">
-            <button name="submit" onClick={this.handleSubmit}>
+            <button
+              className="btn waves-effect green lighten-1"
+              name="submit"
+              onClick={this.handleSubmit}
+            >
               Submit Order
             </button>
-            <button name="cancel" onClick={this.handleCancel}>
+            <button
+              className="btn waves-effect red lighten-1"
+              name="cancel"
+              onClick={this.handleCancel}
+            >
               Cancel Order
             </button>
-            <button name="clear" onClick={this.handleClear}>
+            <button
+              className="btn waves-effect grey"
+              name="clear"
+              onClick={this.handleClear}
+            >
               Clear Cart
             </button>
             <div>
@@ -187,7 +200,10 @@ export default class AddNewOrderPage extends Component {
           </div>
           <div className="order-search-results">
             <h4>Search Results.</h4>
-            <button onClick={this.handleClearSearchResults}>
+            <button
+              onClick={this.handleClearSearchResults}
+              className="btn waves-effect grey"
+            >
               Clear Search Results
             </button>
             {this.state.searchedItems.length === 0 ? (
@@ -198,7 +214,7 @@ export default class AddNewOrderPage extends Component {
             <ul className="order-search-list">{listItems}</ul>
           </div>
           <div className="order-cart-container">
-            <h2>Order Cart</h2>
+            <h6>Order Cart</h6>
             <div className="order-cart">{cartItems}</div>
           </div>
         </div>

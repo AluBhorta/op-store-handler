@@ -41,8 +41,13 @@ export default class Stocks extends Component {
   render() {
     return (
       <div>
-        <h1>Stocks</h1>
-        <button onClick={this.addNewSupply}>Add Item Suppy</button>
+        {/* <h3>Stocks</h3> */}
+        <button
+          onClick={this.addNewSupply}
+          className="btn waves-effect grey lighten-1"
+        >
+          Add Item Suppy
+        </button>
         <StockTable
           stockItems={this.state.stockItems}
           handleTableRowClick={this.handleTableRowClick}

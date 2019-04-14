@@ -11,6 +11,7 @@ import ErrorComponent from "./components/ErrorComponent";
 import qs from "qs";
 import AddNewOrderPage from "./components/order/AddNewOrderPage";
 import OrderHistoryPage from "./components/order/OrderHistoryPage";
+import Header from "./components/Header";
 // import Login from "./components/Login";
 
 class App extends Component {
@@ -22,11 +23,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h2>App</h2>
         <Router>
           <div>
-            {/* nav-links */}
-            <Navigation />
+            <Header />
 
             {/* routes */}
             <Switch>

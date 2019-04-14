@@ -27,20 +27,35 @@ export default function ItemPage({ item }) {
   } = item;
 
   return (
-    <div>
-      <h1>Item Page</h1>
-      <div className="item-page-btns">
-        <button onClick={() => updateItem(item)}>Update Item</button>
-        <button onClick={() => deleteItem(item)}>Delete Item</button>
-      </div>
-
-      <div className="item-details">
-        <p>name: {name}</p>
-        <p>Quantity Unit: {quantityUnit}</p>
-        <p>Stock Quantity: {stockQuantity}</p>
-        <p>Buying Price: {buyingPrice}</p>
-        <p>Selling Price: {sellingPrice}</p>
-        <p>Details: {details}</p>
+    <div className="container">
+      <div className="item-details ">
+        <ul className="collection with-header">
+          <li className="collection-item">
+            <h4>Item Page</h4>
+            <div className="item-page-btns">
+              <button
+                className="btn blue waves-effect"
+                onClick={() => updateItem(item)}
+              >
+                Update Item
+              </button>
+              <button
+                className="btn blue waves-effect"
+                onClick={() => deleteItem(item)}
+              >
+                Delete Item
+              </button>
+            </div>
+          </li>
+          <li className="collection-item">Name: {name}</li>
+          <li className="collection-item">Quantity Unit: {quantityUnit}</li>
+          <li className="collection-item">Stock Quantity: {stockQuantity}</li>
+          <li className="collection-item">Buying Price: {buyingPrice}</li>
+          <li className="collection-item">Selling Price: {sellingPrice}</li>
+          <li className="collection-item">
+            Details: {details ? details : " - "}
+          </li>
+        </ul>
       </div>
     </div>
   );

@@ -401,6 +401,7 @@ ipcMain.on("deleteOrderFromStock", (e, orderId) => {
   });
 });
 
+// SECONDARY
 ipcMain.on("loginSubmit", (e, { username, password }) => {
   // ###
   //

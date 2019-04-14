@@ -24,32 +24,39 @@ export default function OrderHistoryPage({ order }) {
 
   return (
     <div>
+      <div className="container">
+        <ul className="collection with-header">
+          <li className="collection-item">
+            <h4>Order Details</h4>
+            <span className="right-align">
+              <button
+                onClick={() => deleteItem(orderId)}
+                className="btn blue waves-effect"
+              >
+                Delete Order
+              </button>
+            </span>
+          </li>
+          <li className="collection-item">Order Id: {orderId}</li>
+          <li className="collection-item">Date: {date}</li>
+          <li className="collection-item">Total Bill: {totalBill}</li>
+          <li className="collection-item">Number of Items: {numberOfItems}</li>
+        </ul>
+      </div>
       <div>
-        <h1>Order History Page</h1>
-        <div className="order-history-page-btns">
-          <button onClick={() => deleteItem(orderId)}>Delete Order</button>
-        </div>
-
-        <div className="order-history-details">
-          <p>Order Id: {orderId}</p>
-          <p>Date: {date}</p>
-          <p>Total Bill: {totalBill}</p>
-          <p>Number of Items: {numberOfItems}</p>
-
-          <div>
-            <h3>Items</h3>
-            <table>
-              <tbody>
-                <tr className="table-headers">
-                  <th className="table-header">Name</th>
-                  <th className="table-header">Quantity Unit</th>
-                  <th className="table-header">Order Quantity</th>
-                  <th className="table-header">Selling Price</th>
-                </tr>
-                {orderItems}
-              </tbody>
-            </table>
-          </div>
+        <div className="order-history-details center">
+          <h4>Items</h4>
+          <table className="centered red lighten-4">
+            <tbody>
+              <tr className="table-headers">
+                <th className="table-header center-align">Name</th>
+                <th className="table-header center-align">Quantity Unit</th>
+                <th className="table-header center-align">Order Quantity</th>
+                <th className="table-header center-align">Selling Price</th>
+              </tr>
+              {orderItems}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
