@@ -354,6 +354,20 @@ ipcMain.on("submitNewOrder", (e, orderedItems) => {
 
       knex("order_items")
         .insert(dbItems)
+        .then(res => {
+          orderedItems.forEach(item => {
+            knex("items")
+              .where("name", item.name)
+              .update({
+                stockQuantity: item.stockQuantity - item.orderQuantity
+              })
+              .then(res =>
+                console.log(
+                  `successfully reduced stock quantity for ${item.name}`
+                )
+              );
+          });
+        })
         .then(
           console.log(`Successfully recorded order number ${currentOrderId}.`)
         )

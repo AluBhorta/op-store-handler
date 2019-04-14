@@ -162,16 +162,13 @@ function insertToTable() {
 // MAIN
 //
 
-// dropOrderItemsTable();
-// initOrderItemsTable();
+// searchDb("orders");
+// searchDb("order_items");
+searchDb("items");
 
-searchDb("orders");
-searchDb("order_items");
-
-// knex("orders")
-//   .where("orderId", "3")
-//   .del();
-
-// receiving: name, orderQuantity, stockQuantity, quantityUnit, sellingPrice
-
-// stored: [orderId], [name], [orderQuantity], [quantityUnit], <sellingPrice>
+// knex("items")
+//   .where("name", "item3")
+//   .update({
+//     stockQuantity: 120 - 5
+//   })
+//   .then(res => console.log("success"));
