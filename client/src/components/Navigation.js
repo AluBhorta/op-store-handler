@@ -7,7 +7,7 @@ export default withRouter(function Navigation({ location }) {
   const showNav = !noNavPaths.includes(pathname);
 
   return showNav ? (
-    <ul class="navigation">
+    <ul class="navigation right container">
       <li>
         <Link to="/">Dashboard</Link>
       </li>

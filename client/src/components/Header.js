@@ -7,11 +7,17 @@ export default function Header() {
       <div className="nav-wrapper red lighten-2 ">
         <span
           to="/"
-          className="brand-logo right"
+          className="brand-logo right "
           style={{ paddingRight: "40px" }}
         >
-          OP SMS
-          {/* <img src="../op-sms-logo.svg" alt="" /> */}
+          {/* OP wat */}
+          {/* <img
+            className="brand-logo"
+            src="../opLogo.png"
+            alt="OP SMS Logo"
+            width="100px"
+            height="100px"
+          /> */}
         </span>
         <Navigation />
       </div>

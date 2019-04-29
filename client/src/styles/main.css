@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 .order-page-container {
   display: grid;
   grid-template-columns: 4fr 8fr;
@@ -48,4 +51,11 @@ h1 {
 
 .brand-logo {
   font-family: Geneva, Tahoma, sans-serif;
+  background-image: url("../opLogo.png");
+  background-size: contain;
+  width: 140px;
+  height: 100px;
+  background-repeat: no-repeat;
+  margin-right: 20px;
+  margin-top: 8px;
 }
