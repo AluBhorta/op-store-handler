@@ -19,7 +19,7 @@ export default function StockTable({ stockItems, handleTableRowClick }) {
   return (
     <div>
       <h4 className="center">Stock Table</h4>
-      <div>
+      <div className="container table-container">
         <table className="centered red lighten-4">
           <tbody>
             <tr className="table-headers">

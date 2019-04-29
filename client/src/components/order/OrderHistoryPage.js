@@ -46,17 +46,19 @@ export default function OrderHistoryPage({ order }) {
       <div>
         <div className="order-history-details center">
           <h4>Items</h4>
-          <table className="centered red lighten-4">
-            <tbody>
-              <tr className="table-headers">
-                <th className="table-header center-align">Name</th>
-                <th className="table-header center-align">Quantity Unit</th>
-                <th className="table-header center-align">Order Quantity</th>
-                <th className="table-header center-align">Selling Price</th>
-              </tr>
-              {orderItems}
-            </tbody>
-          </table>
+          <div className="container table-container">
+            <table className="centered red lighten-4">
+              <tbody>
+                <tr className="table-headers">
+                  <th className="table-header center-align">Name</th>
+                  <th className="table-header center-align">Quantity Unit</th>
+                  <th className="table-header center-align">Order Quantity</th>
+                  <th className="table-header center-align">Selling Price</th>
+                </tr>
+                {orderItems}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

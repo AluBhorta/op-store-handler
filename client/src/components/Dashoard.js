@@ -128,7 +128,7 @@ export default class Dashoard extends Component {
           <div className="dashboard-wrapper-left ">
             <div className="card">
               <div className="card-content">
-                <h5>Number of Items in Stock</h5>
+                <h5 className="center-align">Number of Items in Stock</h5>
                 <p className="center-align" style={{ fontSize: "20px" }}>
                   {420}
                 </p>
@@ -137,12 +137,14 @@ export default class Dashoard extends Component {
             <div>
               <div className="card">
                 <div className="card-content">
-                  <h5>Items with Limited Stock</h5>
+                  <h5 className="center-align">
+                    Items with Limited Stock Quantity
+                  </h5>
                   <table className="centered red lighten-4">
                     <tbody>
                       <tr>
-                        <th>Item Name</th>
-                        <th>Stock Quantity</th>
+                        <th className="center-align">Item Name</th>
+                        <th className="center-align">Stock Quantity</th>
                       </tr>
                       {/* insert rows here */}
 

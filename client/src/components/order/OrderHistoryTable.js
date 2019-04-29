@@ -17,17 +17,19 @@ export default function OrderHistoryTable({ orders, handleTableRowClick }) {
   return (
     <div>
       <h4 className="center">Order History Table</h4>
-      <table className="centered red lighten-4">
-        <tbody>
-          <tr className="table-headers">
-            <th className="table-header center-align">Order Id</th>
-            <th className="table-header center-align">Date</th>
-            <th className="table-header center-align">Total Bill</th>
-            <th className="table-header center-align">Number Of Items</th>
-          </tr>
-          {orderHistoryContents}
-        </tbody>
-      </table>
+      <div className="container table-container">
+        <table className="centered red lighten-4">
+          <tbody>
+            <tr className="table-headers">
+              <th className="table-header center-align">Order Id</th>
+              <th className="table-header center-align">Date</th>
+              <th className="table-header center-align">Total Bill</th>
+              <th className="table-header center-align">Number Of Items</th>
+            </tr>
+            {orderHistoryContents}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

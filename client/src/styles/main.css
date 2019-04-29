@@ -4,9 +4,6 @@
   grid-gap: 1rem;
 }
 
-.order-page-container > div {
-}
-
 table tr:nth-child(even) {
   background-color: #ef9a9a;
 }
@@ -41,4 +38,14 @@ h1 {
   width: 95%;
   max-width: 98%;
   min-width: 75%;
+}
+
+.table-container {
+  height: 69vh;
+  display: block;
+  overflow-y: scroll;
+}
+
+.brand-logo {
+  font-family: Geneva, Tahoma, sans-serif;
 }
