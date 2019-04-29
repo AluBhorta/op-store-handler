@@ -57,8 +57,24 @@ export default class UpdateItemPage extends Component {
   render() {
     return (
       <div className="container">
-        <h2>Update Item Form</h2>
+        <h3>Update Item</h3>
         <form>
+          <div>
+            <button
+              className="btn waves-effect green lighten-1"
+              name="submit"
+              onClick={this.handleSubmit}
+            >
+              Submit
+            </button>
+            <button
+              className="btn waves-effect red"
+              name="cancel"
+              onClick={this.handleCancel}
+            >
+              Cancel
+            </button>
+          </div>
           <div className="form-item-info">
             <label>Name: </label>
             <input
@@ -125,20 +141,6 @@ export default class UpdateItemPage extends Component {
             <br />
             <br />
           </div>
-          <button
-            className="btn waves-effect green lighten-1"
-            name="submit"
-            onClick={this.handleSubmit}
-          >
-            Submit
-          </button>
-          <button
-            className="btn waves-effect red"
-            name="cancel"
-            onClick={this.handleCancel}
-          >
-            Cancel
-          </button>
         </form>
       </div>
     );

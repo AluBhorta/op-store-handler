@@ -31,7 +31,7 @@ export default function ItemPage({ item }) {
       <div className="item-details ">
         <ul className="collection with-header">
           <li className="collection-item">
-            <h4>Item Page</h4>
+            <h4>Item: {name}</h4>
             <div className="item-page-btns">
               <button
                 className="btn blue waves-effect"
@@ -47,7 +47,7 @@ export default function ItemPage({ item }) {
               </button>
             </div>
           </li>
-          <li className="collection-item">Name: {name}</li>
+          {/* <li className="collection-item">Name: {name}</li> */}
           <li className="collection-item">Quantity Unit: {quantityUnit}</li>
           <li className="collection-item">Stock Quantity: {stockQuantity}</li>
           <li className="collection-item">Buying Price: {buyingPrice}</li>

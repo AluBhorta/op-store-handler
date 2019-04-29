@@ -178,7 +178,30 @@ export default class AddNewItemsPage extends Component {
     return (
       <div className="container">
         <form>
-          <h5>Add Items Form</h5>
+          <h5>Add Item Supply</h5>
+          <div className="form-btn">
+            <button
+              className="btn waves-effect green"
+              name="submit"
+              onClick={this.handleSubmit}
+            >
+              Submit
+            </button>
+            <button
+              className="btn waves-effect red"
+              name="cancel"
+              onClick={this.handleCancel}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn waves-effect grey"
+              name="clear"
+              onClick={this.handleClear}
+            >
+              Clear
+            </button>
+          </div>
           <div className="form-radio-btns">
             <p>
               If the Item already exists in Stock, select <strong>Old</strong>.
@@ -306,29 +329,6 @@ export default class AddNewItemsPage extends Component {
             />
             <br />
             <br />
-          </div>
-          <div className="form-btn">
-            <button
-              className="btn waves-effect green"
-              name="submit"
-              onClick={this.handleSubmit}
-            >
-              Submit
-            </button>
-            <button
-              className="btn waves-effect red"
-              name="cancel"
-              onClick={this.handleCancel}
-            >
-              Cancel
-            </button>
-            <button
-              className="btn waves-effect grey"
-              name="clear"
-              onClick={this.handleClear}
-            >
-              Clear
-            </button>
           </div>
         </form>
       </div>
