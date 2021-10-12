@@ -11,7 +11,7 @@
   "author": "AluBhorta",
   "license": "GNU",
   "dependencies": {
-    "electron": "^4.0.8",
+    "electron": "^11.5.0",
     "knex": "^0.19.5",
     "qs": "^6.7.0",
     "smalltalk": "^3.2.2",
